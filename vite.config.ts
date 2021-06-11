@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
 		alias: {
+			vue: "vue/dist/vue.esm-bundler.js",
 			'@': resolve('src'),
 			comps: resolve('src/components'),
 			apis: resolve('src/apis'),

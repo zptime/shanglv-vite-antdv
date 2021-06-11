@@ -1,4 +1,5 @@
 <template>
+  <img alt="Vue logo" src="../assets/logo.png" />
   <h1>{{ msg }}</h1>
   <button type="button" @click="increment">count is: {{ count }}</button>
 </template>
@@ -14,7 +15,8 @@ export default defineComponent({
   props: {
     msg: {
       type: String,
-      required: true
+      // required: true,
+      default: 'Hello Vue 3 + TypeScript + Vite'
     }
   },
   setup: () => {

@@ -28,7 +28,7 @@ $ yarn create @vitejs/app shanglv-vite-antdv --template vue
 
 ![启动页](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/3000.jpg)
 
-## 2. 引入 Vuex
+## 2. Vuex 配置
 
 Vuex 官方文档：[https://next.vuex.vuejs.org/](https://next.vuex.vuejs.org/)
 
@@ -149,11 +149,6 @@ export default defineConfig({
     alias: {
       "@/": resolve("src/*"),
       comps: resolve("src/components"),
-      apis: resolve("src/apis"),
-      views: resolve("src/views"),
-      utils: resolve("src/utils"),
-      routes: resolve("src/routes"),
-      styles: resolve("src/styles"),
       store: resolve("src/store"),
     },
   },
@@ -172,11 +167,9 @@ npm install @types/node --save-dev
 
 原因分析：以当前项目的上级目录为根目录，可能 Vetur 不知道当前哪一层文件夹才是真正的根目录。
 
-解决办法：在 vscode 里新打开一个以当前项目根目录为顶级目录的窗口；并且改项目文件必须放在第一个。
+解决办法：
 
-![解决图示](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/alias.jpg)
-
-网上有好多帖子说，在 tsconfig.json 中配置 baseUrl 和 paths，其实是没有用的。这个问题本质上是插件本身的问题。
+（1）在 tsconfig.json 中配置 baseUrl 和 paths
 
 ```json
 {
@@ -185,16 +178,131 @@ npm install @types/node --save-dev
     "paths": {
       "@": ["src/*"],
       "comps/*": ["src/components/*"],
-      "apis/*": ["src/apis/*"],
-      "views/*": ["src/utils/*"],
-      "routes/*": ["src/routes/*"],
-      "styles/*": ["src/styles/*"],
       "store/*": ["src/store/*"]
     }
   }
 }
 ```
 
+（2）在 vscode 里新打开一个以当前项目根目录为顶级目录的窗口；并且改项目文件必须放在第一个。
+
+![解决图示](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/alias.jpg)
+
 - 配置后效果展示：
 
 ![vuex配置效果](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/vuex.jpg)
+
+## 3. Vue Router 4.x 配置
+
+Vue Router 官方中文文档：[https://next.router.vuejs.org/zh/introduction.html](https://next.router.vuejs.org/zh/introduction.html)
+
+- 安装命令
+
+```sh
+$ npm install vue-router@4
+```
+
+- 修改 App.vue 文件
+
+```html
+<template>
+  <router-view></router-view>
+</template>
+
+<script lang="ts">
+  export default {
+    name: "App",
+  };
+</script>
+
+<style></style>
+```
+
+- 在 src 目录下新建 router/index.ts
+
+```js
+import { createRouter, createWebHistory } from "vue-router";
+import type { App } from "vue";
+
+const HelloWorld = () => import("../components/HelloWorld.vue");
+const About = { template: "<div>About</div>" };
+const User = {
+  template: `
+		<div>
+			<h2>User {{ $route.params.id }}</h2>
+			<router-view></router-view>
+		</div>`,
+};
+
+const routes = [
+  { path: "/", component: HelloWorld },
+  { path: "/about", component: About },
+  { path: "/users/:id", component: User },
+];
+
+const router = createRouter({
+  // createWebHashHistory (hash路由 Hash模式 #)
+  // createWebHistory (history路由 HTML5 模式 推荐，需要服务器配置支持)
+  // createMemoryHistory 带缓存 history 路由
+  // 添加baseUrl，createWebHistory(baseUrl)
+  history: createWebHistory(),
+  routes,
+});
+
+export function setupRouter(app: App<Element>) {
+  app.use(router);
+}
+
+export default router;
+```
+
+- main.ts 修改
+
+```js
+import { createApp } from "vue";
+import { setupStore } from "./store"; // 状态管理
+import router, { setupRouter } from "./router"; // 路由 ++
+import App from "./App.vue";
+
+const app = createApp(App);
+
+setupRouter(app); // 引入路由
+setupStore(app); // 引入状态管理 ++
+
+router.isReady().then(() => {
+  app.mount("#app");
+});
+```
+
+- 问题解决
+
+警告一：[Vue warn]: Missing required prop: "msg" at <HelloWorld onVnodeUnmounted=fn<onVnodeUnmounted> ref=Ref< undefined >
+
+```js
+// HelloWorld.vue 中的 required 去掉
+export default defineComponent({
+  name: 'HelloWorld',
+  props: {
+    msg: {
+      type: String,
+      // required: true,
+      default: 'Hello Vue 3 + TypeScript + Vite'
+    }
+  }
+  ...
+})
+```
+
+警告二：访问"/about"时报错，[Vue warn]: Component provided template option but runtime compilation is not supported in this build of Vue. Configure your bundler to alias "vue" to "vue/dist/vue.esm-bundler.js".（组件提供模板选项，但是在Vue的这个构建中不支持运行时编译，配置你的bundler别名 vue： vue/dist/vue.esm-bundler.js）
+
+```js
+// 在vite.config.ts中配置别名
+// 可参考文档：https://blog.csdn.net/qq_41499782/article/details/112505665
+export default defineConfig({
+  resolve: {
+    alias: {
+      vue: "vue/dist/vue.esm-bundler.js",
+    },
+  }
+});
+```
