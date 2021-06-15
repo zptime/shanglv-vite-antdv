@@ -2,6 +2,9 @@
   <img alt="Vue logo" src="../assets/logo.png" />
   <h1>{{ msg }}</h1>
   <button type="button" @click="increment">count is: {{ count }}</button>
+  <a-button type="primary" @click="increment">count is: {{ count }}</a-button>
+  <a-radio checked>Radio</a-radio>
+  <a-checkbox checked>Checkbox</a-checkbox>
 </template>
 
 <script lang="ts">

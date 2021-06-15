@@ -293,7 +293,7 @@ export default defineComponent({
 })
 ```
 
-警告二：访问"/about"时报错，[Vue warn]: Component provided template option but runtime compilation is not supported in this build of Vue. Configure your bundler to alias "vue" to "vue/dist/vue.esm-bundler.js".（组件提供模板选项，但是在Vue的这个构建中不支持运行时编译，配置你的bundler别名 vue： vue/dist/vue.esm-bundler.js）
+警告二：访问"/about"时报错，[Vue warn]: Component provided template option but runtime compilation is not supported in this build of Vue. Configure your bundler to alias "vue" to "vue/dist/vue.esm-bundler.js".（组件提供模板选项，但是在 Vue 的这个构建中不支持运行时编译，配置你的 bundler 别名 vue： vue/dist/vue.esm-bundler.js）
 
 ```js
 // 在vite.config.ts中配置别名
@@ -303,6 +303,144 @@ export default defineConfig({
     alias: {
       vue: "vue/dist/vue.esm-bundler.js",
     },
-  }
+  },
 });
+```
+
+## 4. Sass/Scss 预处理器
+
+```bash
+$ npm install -D sass sass-loader
+```
+
+## 5. Ant Design of Vue 安装及配置
+
+官网：[https://2x.antdv.com/docs/vue/getting-started-cn](https://2x.antdv.com/docs/vue/getting-started-cn)
+
+```bash
+$ npm i --save ant-design-vue@next
+```
+
+### （1）全局引入
+
+在 src 目录下新增 libs/antdv.ts 文件
+
+```js
+// （1）全局引入
+import type { App } from "vue";
+import Antd from "ant-design-vue";
+import "ant-design-vue/dist/antd.css";
+
+export function setupAntd(app: App<Element>): void {
+  app.use(Antd);
+}
+```
+
+修改 main.ts 文件
+
+```js
+import { createApp } from "vue";
+import { setupStore } from "./store"; // 状态管理
+import router, { setupRouter } from "./router"; // 路由
+import { setupAntd } from "./libs/antdv"; // 新增++
+import App from "./App.vue";
+
+const app = createApp(App);
+
+setupRouter(app); // 引入路由
+setupStore(app); // 引入状态管理
+setupAntd(app); // 新增++
+
+router.isReady().then(() => {
+  app.mount("#app");
+});
+```
+
+警告提示：You are using a whole package of antd, please use https://www.npmjs.com/package/babel-plugin-import to reduce app bundle size. Not support Vite !!!
+
+解决方法：需要进行按需加载，可使用 babel-plugin-import 插件，但是该插件不支持 vite
+
+### （2）手动按需引入
+
+修改 antdv.ts 文件
+
+```js
+import type { App } from "vue";
+import Button from "ant-design-vue/es/button"; // 加载 JS
+import "ant-design-vue/es/button/style/css"; // 加载 CSS
+// import 'ant-design-vue/es/button/style';         // 加载 LESS
+
+import Radio from "ant-design-vue/es/radio";
+import "ant-design-vue/es/radio/style/css";
+import Checkbox from "ant-design-vue/es/checkbox";
+import "ant-design-vue/es/checkbox/style/css";
+
+export function setupAntd(app: App<Element>): void {
+  app.use(Button);
+  app.use(Radio);
+  app.use(Checkbox);
+}
+```
+
+### （3）使用插件按需引入
+
+按照上面的方式按需引入，每一个都要单独写，有点麻烦。因此采用 vite-plugin-imp 插件帮我们引入，实现效果是一样的。
+
+参看文档：[https://github.com/vitejs/vite/issues/1389](https://github.com/vitejs/vite/issues/1389)
+
+安装 vite-plugin-imp
+
+```bash
+$ npm i vite-plugin-imp -D
+```
+
+修改 vite.config.ts 文件
+
+```js
+import { defineConfig } from "vite";
+import vitePluginImp from "vite-plugin-imp";
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    vitePluginImp({
+      libList: [
+        {
+          libName: "ant-design-vue",
+          // style: (name) => `ant-design-vue/es/${name}/style/css`, // 加载css
+          style: (name) => `ant-design-vue/es/${name}/style`, // 加载less
+        },
+      ],
+    }),
+  ],
+  css: {
+    preprocessorOptions: {
+      less: {
+        // 自定义定制主题
+        modifyVars: { "primary-color": "#1188ff" },
+        javascriptEnabled: true,
+      },
+    },
+  },
+});
+```
+
+加载 less 文件时，需要安装 less 依赖，此时可以自定义主题样式。覆盖默认的样式；加载 css 文件，则不需要安装
+
+```bash
+$ npm i less -D
+```
+
+修改 antdv.ts 文件
+
+```js
+import type { App } from "vue";
+import { Button, Radio, Checkbox } from "ant-design-vue";
+const components = [Button, Radio, Checkbox];
+
+export function setupAntd(app: App<Element>): void {
+  components.forEach((component: any) => {
+    app.use(component);
+  });
+}
 ```
