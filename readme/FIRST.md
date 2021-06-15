@@ -293,7 +293,9 @@ export default defineComponent({
 })
 ```
 
-警告二：访问"/about"时报错，[Vue warn]: Component provided template option but runtime compilation is not supported in this build of Vue. Configure your bundler to alias "vue" to "vue/dist/vue.esm-bundler.js".（组件提供模板选项，但是在 Vue 的这个构建中不支持运行时编译，配置你的 bundler 别名 vue： vue/dist/vue.esm-bundler.js）
+警告二：访问"/about"时报错，[Vue warn]: Component provided template option but runtime compilation is not supported in this build of Vue. Configure your bundler to alias "vue" to "vue/dist/vue.esm-bundler.js".
+
+翻译：组件提供模板选项，但是在 Vue 的这个构建中不支持运行时编译，配置你的 bundler 别名 vue： vue/dist/vue.esm-bundler.js
 
 ```js
 // 在vite.config.ts中配置别名
@@ -425,7 +427,7 @@ export default defineConfig({
 });
 ```
 
-加载 less 文件时，需要安装 less 依赖，此时可以自定义主题样式。覆盖默认的样式；加载 css 文件，则不需要安装
+加载 less 文件时，需要安装 less 依赖，此时可以自定义主题样式，覆盖默认的样式；加载 css 文件，则不需要安装
 
 ```bash
 $ npm i less -D
@@ -444,3 +446,15 @@ export function setupAntd(app: App<Element>): void {
   });
 }
 ```
+
+修改 components/HelloWorld.vue 组件
+
+```html
+<a-button type="primary" @click="increment">count is: {{ count }}</a-button>
+<a-radio checked>Radio</a-radio>
+<a-checkbox checked>Checkbox</a-checkbox>
+```
+
+实现效果
+
+![浏览效果](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/antdv.jpg)
