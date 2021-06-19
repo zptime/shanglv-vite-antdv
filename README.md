@@ -7,4 +7,5 @@
 ## 开发文档
 
 1. [Vite + TS + AntdV 从零开始搭建后台管理系统（一）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/FIRST.md)
+2. [Vite + TS + AntdV 从零开始搭建后台管理系统（二）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/SECOND.md)
 

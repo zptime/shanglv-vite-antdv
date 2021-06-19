@@ -320,7 +320,11 @@ $ npm install -D sass sass-loader
 官网：[https://2x.antdv.com/docs/vue/getting-started-cn](https://2x.antdv.com/docs/vue/getting-started-cn)
 
 ```bash
+# 组件库安装
 $ npm i --save ant-design-vue@next
+
+# 图标库安装
+$ npm install --save @ant-design/icons-vue
 ```
 
 ### （1）全局引入

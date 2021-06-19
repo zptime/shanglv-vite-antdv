@@ -1,6 +1,7 @@
-import { createRouter, createWebHistory  } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import type { App } from "vue";
 
+const Layout = () => import("@/layout/index.vue");
 const HelloWorld = () => import("../components/HelloWorld.vue");
 const About = { template: "<div>About</div>" };
 const User = {
@@ -12,7 +13,18 @@ const User = {
 };
 
 const routes = [
-  { path: "/", component: HelloWorld },
+  {
+    path: "/",
+    component: Layout,
+    redirect: "/home",
+    children: [
+      {
+        path: "/home",
+        name: "home",
+        component: () => import("comps/HelloWorld.vue"),
+      }
+    ]
+  },
   { path: "/about", component: About },
   { path: "/users/:id", component: User }
 ];

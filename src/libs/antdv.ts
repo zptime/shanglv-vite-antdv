@@ -1,11 +1,11 @@
 // （1）全局引入
-// import type { App } from "vue";
-// import Antd from "ant-design-vue";
-// import "ant-design-vue/dist/antd.css";
+import type { App } from "vue";
+import Antd from "ant-design-vue";
+import "ant-design-vue/dist/antd.css";
 
-// export function setupAntd(app: App<Element>): void {
-//   app.use(Antd);
-// }
+export function setupAntd(app: App<Element>): void {
+  app.use(Antd);
+}
 
 // （2）手动按需引入
 // import type { App } from "vue";
@@ -25,12 +25,12 @@
 // }
 
 // （3）使用插件按需引入
-import type { App } from "vue";
-import { Button, Radio, Checkbox } from "ant-design-vue";
-const components = [Button, Radio, Checkbox];
+// import type { App } from "vue";
+// import { Button, Radio, Checkbox } from "ant-design-vue";
+// const components = [Button, Radio, Checkbox];
 
-export function setupAntd(app: App<Element>): void {
-  components.forEach((component: any) => {
-    app.use(component);
-  });
-}
+// export function setupAntd(app: App<Element>): void {
+//   components.forEach((component: any) => {
+//     app.use(component);
+//   });
+// }
