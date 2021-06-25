@@ -1,4 +1,4 @@
-# Vite + TS + AntdV 搭建后台管理系统（一）
+# Vite + TS + AntdV 从零开始搭建后台管理系统（一）
 
 ## 1. Vite 项目初始化配置
 
@@ -56,21 +56,18 @@ export interface State {
 // 定义注入类型
 const key: InjectionKey<Store<State>> = Symbol();
 
-const store =
-  createStore <
-  State >
-  {
-    state() {
-      return {
-        count: 0,
-      };
+const store = createStore<State>({
+  state() {
+    return {
+      count: 0,
+    };
+  },
+  mutations: {
+    increment(state: State) {
+      state.count++;
     },
-    mutations: {
-      increment(state: State) {
-        state.count++;
-      },
-    },
-  };
+  },
+});
 
 // 将类型注入useStore
 // 以后项目中引用的均为自定义的这个，而不是vuex默认导出的useStore

@@ -25,7 +25,7 @@ export default defineComponent({
   setup: () => {
     const store = useStore()
     return {
-      count: computed(() => store.state.app.count),
+      count: computed(() => store.state.count),
       increment: () => store.commit('increment'),
     }
   }
