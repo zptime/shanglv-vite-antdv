@@ -29,9 +29,14 @@ export default defineConfig({
 			utils: resolve('src/utils'),
 			routes: resolve('src/routes'),
 			styles: resolve('src/styles'),
-			store: resolve('src/store')
-		}
+			store: resolve('src/store'),
+      // '@ant-design/icons-vue/lib/index$': resolve('src/libs/antdvIcons.ts')
+		},
 	},
+  // 引入第三方的配置
+  // optimizeDeps: {
+  //   include: ["@ant-design/icons-vue"],
+  // },
 	// css: {
   //   preprocessorOptions: {
   //     less: {

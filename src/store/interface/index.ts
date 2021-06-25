@@ -1,4 +1,5 @@
 import { defineComponent } from 'vue'
+// import type { RouteRecordRaw } from 'vue-router'
 
 type Component<T extends any = any> =
   | ReturnType<typeof defineComponent>
@@ -16,7 +17,7 @@ export interface SettingsState {
   collapse: boolean,
 }
 
-interface MetaModel {
+interface RouteMeta {
   title: string,
   icon: string,
   // auth: string[]
@@ -28,21 +29,34 @@ interface MetaModel {
   // roles?: string[]
 }
 
-export interface RouteModel {
+export interface RouteRecord {
   id: string,
   name?: string,
-  meta?: MetaModel[]
-  children?: RouteModel[],
+  meta?: RouteMeta,
+  children?: RouteRecord[],
   orderId?: number,
   path?: string
   component?: Component | string
   redirect?: string
 }
 
+// @ts-ignore
+// export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta'> {
+//   // id: string,
+//   name: string
+//   meta: RouteMeta
+//   component?: Component | string
+//   components?: Component
+//   children?: AppRouteRecordRaw[]
+//   props?: Recordable
+//   fullPath?: string
+//   query?: Partial<Recordable>  | undefined
+// }
+
 export interface RoutesState {
-  routes: Array<RouteModel>,
-  // routes: Array<object>;
-  menus: Array<RouteModel>,
+  routes: Array<object>;
+  // routes: Array<AppRouteRecordRaw>,
+  menus: Array<object>;
 }
 
 // 主接口(顶级类型声明)
