@@ -1,20 +1,31 @@
 import { createRouter, createWebHistory } from "vue-router";
 import type { App } from "vue";
 
-const HelloWorld = () => import("../components/HelloWorld.vue");
+const Layout = () => import("@/layout/index.vue");
 const About = { template: "<div>About</div>" };
 const User = {
   template: `
 		<div>
 			<h2>User {{ $route.params.id }}</h2>
 			<router-view></router-view>
-		</div>`,
+		</div>`
 };
 
 const routes = [
-  { path: "/", component: HelloWorld },
+  {
+    path: "/",
+    component: Layout,
+    redirect: "/home",
+    children: [
+      {
+        path: "/home",
+        name: "home",
+        component: () => import("comps/HelloWorld.vue"),
+      }
+    ]
+  },
   { path: "/about", component: About },
-  { path: "/users/:id", component: User },
+  { path: "/users/:id", component: User }
 ];
 
 const router = createRouter({

@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import { setupStore } from "./store"; // 状态管理
 import router, { setupRouter } from "./router"; // 路由
-import { setupAntd } from "./libs/antdv"; // 组件库
+import { setupAntd } from "./libs/antdv"; // 组件管理
 import App from "./App.vue";
 
 const app = createApp(App);
