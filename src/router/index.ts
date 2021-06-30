@@ -9,26 +9,26 @@ export const constRoutes = [
     path: "/login",
     name: "login",
     component: { template: "<div>登录页</div>" },
-    meta: { title: "登录页", icon: "" },
+    meta: { title: "登录页", hidden: true },
   },
   {
     path: "/404",
     name: "404",
     component: { template: "<div>404页面</div>" },
-    meta: { title: "404", icon: "" },
+    meta: { title: "404", hidden: true },
   },
   {
     id: "C01",
     path: "/",
     component: Layout,
     redirect: "/dashboard",
-    meta: { title: "首页", icon: "" },
+    meta: { title: "首页", icon: "PieChartOutlined" },
     children: [
       {
         id: "R010",
         path: "dashboard",
         name: "dashboard",
-        meta: { title: "首页", icon: "" },
+        meta: { title: "首页" },
         component: () => import("comps/HelloWorld.vue"),
       },
     ],
@@ -42,13 +42,13 @@ export const dynamicRoutes = [
     path: "/system",
     component: Layout,
     redirect: "/system/user",
-    meta: { title: "系统管理", role: ["admin"] },
+    meta: { title: "系统管理", icon: "DesktopOutlined", role: ["admin"] },
     children: [
       {
         id: "R020",
         path: "user",
         name: "user",
-        meta: { title: "用户列表", role: ["admin"] },
+        meta: { title: "用户列表", icon: "AppstoreOutlined", role: ["admin"] },
         component: () => import("views/system/user/index.vue"),
         children: [
           {
@@ -63,20 +63,26 @@ export const dynamicRoutes = [
             meta: { title: "编辑用户", role: ["admin"] },
             component: { template: "<div>编辑用户</div>" },
           },
-        ]
+          {
+            path: "edit",
+            name: "userHidden",
+            meta: { title: "隐藏页", role: ["admin"], hidden: true },
+            component: { template: "<div>隐藏页</div>" },
+          },
+        ],
       },
       {
         id: "R021",
         path: "role",
         name: "role",
-        meta: { title: "角色列表", role: ["admin"] },
+        meta: { title: "角色列表", icon: "InboxOutlined", role: ["admin"] },
         component: () => import("views/system/role/index.vue"),
       },
       {
         id: "R022",
         path: "permission",
         name: "permission",
-        meta: { title: "权限列表", role: ["admin"] },
+        meta: { title: "权限列表", icon: "MailOutlined", role: ["admin"] },
         component: () => import("views/system/permission/index.vue"),
       },
     ],
@@ -86,7 +92,7 @@ export const dynamicRoutes = [
     path: "/result",
     component: Layout,
     redirect: "/result/200",
-    meta: { title: "结果页", role: ["admin"] },
+    meta: { title: "结果页", icon: "SettingOutlined", role: ["admin"] },
     children: [
       {
         id: "R030",
@@ -109,7 +115,7 @@ export const dynamicRoutes = [
     component: Layout,
     name: "permission",
     redirect: "/permission/index",
-    meta: { title: "权限测试", role: ["admin", "root"] },
+    meta: { title: "权限测试", icon: "QqOutlined", role: ["admin", "root"] },
     children: [
       {
         path: "index",
@@ -120,7 +126,7 @@ export const dynamicRoutes = [
     ],
   },
   // 一定要放在最后，且在动态路由中添加，避免所有页面都被拦截到404
-  // { path: "/:pathMatch(.*)*", redirect: "/404", hidden: true },
+  { path: "/:pathMatch(.*)*", redirect: "/404", meta: { hidden: true } },
 ];
 
 // createWebHashHistory (hash路由 Hash模式 #)

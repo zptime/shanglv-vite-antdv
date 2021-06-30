@@ -16,22 +16,23 @@ const routes: Module<RoutesState, RootStateTypes> = {
   },
   mutations: {
     SET_ROUTE(state: RoutesState, data: any[]) {
-      state.routes = R.concat(constRoutes, data);
+      state.routes = data;
     },
     SET_MENU(state: RoutesState, data: any[]) {
-      state.menus = generateMenu(data);
+      state.menus = data;
     },
   },
   actions: {
     generateRoutes({ commit }, roles) {
       return new Promise((resolve) => {
         let routes = R.concat(constRoutes, dynamicRoutes);
+        let menus = generateMenu(routes);
         resetRoute();
         R.forEach((route: RouteRecordRaw) => {
           router.addRoute(route);
         }, routes);
-        commit("SET_MENU", routes);
-        commit("SET_ROUTE", dynamicRoutes);
+        commit("SET_ROUTE", routes);
+        commit("SET_MENU", menus);
         resolve(routes);
       });
     },
@@ -73,5 +74,15 @@ const cleanRotes = (routes: any, roles: string[]) => {
 
 // 生成菜单
 const generateMenu = (routes: any) => {
-  return [];
+  const menus = R.filter((o: any) => {
+    if (o.meta && o.meta.hidden) {
+      return false;
+    } else {
+      if (o.children && o.children.length) {
+        o.children = generateMenu(o.children);
+      }
+      return o;
+    }
+  }, routes);
+  return menus;
 };

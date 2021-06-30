@@ -14,7 +14,7 @@ export interface AppState {
 export interface SettingsState {
   logo: string,
   title: string,
-  collapse: boolean,
+  isCollapse: boolean,
 }
 
 interface RouteMeta {

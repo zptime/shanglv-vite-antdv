@@ -4,19 +4,19 @@ import { SettingsState, RootStateTypes } from '../interface/index';
 const settings: Module<SettingsState, RootStateTypes> = {
   state() {
     return {
-      logo: "",
+      logo: "GithubOutlined",
       title: "Vite TS Antdv",
-      collapse: true,
+      isCollapse: false,
     }
   },
   getters: {
     logo: (state) => state.logo,
     title: (state) => state.title,
-    collapse: (state) => state.collapse,
+    isCollapse: (state) => state.isCollapse,
   },
   mutations: {
     TOOGLE_COLLAPSE(state) {
-      state.collapse = !state.collapse
+      state.isCollapse = !state.isCollapse
     },
   },
   actions: {

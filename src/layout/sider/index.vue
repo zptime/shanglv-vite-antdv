@@ -1,32 +1,32 @@
 <template>
-  <a-layout-sider v-model:collapsed="collapsed" collapsible>
-    <div class="logo" />
+  <a-layout-sider v-model:collapsed="isCollapse">
+    <Logo />
     <Menu />
   </a-layout-sider>
 </template>
 
 <script lang="ts">
-
-import { defineComponent, ref } from "vue";
-import Menu from "./menu.vue"
+import { defineComponent, computed } from "vue";
+import { useStore } from "store/index";
+import Logo from "./logo.vue";
+import Menu from "./menu.vue";
 
 export default defineComponent({
   components: {
+    Logo,
     Menu,
   },
-  data() {
+  setup() {
+    const store = useStore();
+    const isCollapse = computed(() => store.state.settings.isCollapse);
+    console.log("isCollapse", isCollapse.value);
+
     return {
-      collapsed: ref<boolean>(false),
-      selectedKeys: ref<string[]>(["1"]),
+      isCollapse,
     };
   },
 });
 </script>
 
-<style scoped>
-.logo {
-  height: 32px;
-  margin: 16px;
-  background: rgba(255, 255, 255, 0.3);
-}
+<style>
 </style>

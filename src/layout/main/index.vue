@@ -21,7 +21,8 @@ export default defineComponent({
     Breadcrumb,
   },
   data() {
-    return {};
+    return {
+    };
   },
 });
 </script>

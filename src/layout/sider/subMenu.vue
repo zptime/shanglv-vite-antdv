@@ -1,31 +1,28 @@
 <template>
   <a-sub-menu :key="menuInfo.name" v-bind="$attrs">
-      <template #title>
-        <span>
-          <MailOutlined />
-          <span>{{ menuInfo.meta.title }}</span>
-        </span>
+    <template #title>
+      <span>
+        <Icon v-if="menuInfo.meta.icon" :icon="menuInfo.meta.icon" />
+        <!-- <component v-if="menuInfo.meta.icon" :is="menuInfo.meta.icon" /> -->
+        <span>{{ menuInfo.meta.title }}</span>
+      </span>
+    </template>
+    <template v-for="item in menuInfo.children" :key="item.name">
+      <template v-if="!item.children">
+        <a-menu-item :key="item.name">
+          <Icon v-if="item.meta.icon" :icon="item.meta.icon" />
+          <!-- <component v-if="item.meta.icon" :is="item.meta.icon" /> -->
+          <span>{{ item.meta.title }}</span>
+        </a-menu-item>
       </template>
-      <template v-for="item in menuInfo.children" :key="item.name">
-        <template v-if="!item.children">
-          <a-menu-item :key="item.name">
-            <PieChartOutlined />
-            <span>{{ item.meta.title }}</span>
-          </a-menu-item>
-        </template>
-        <template v-else>
-          <SubMenu :menu-info="item" :key="item.name" />
-        </template>
+      <template v-else>
+        <SubMenu :menu-info="item" :key="item.name" />
       </template>
-    </a-sub-menu>
+    </template>
+  </a-sub-menu>
 </template>
 
 <script lang="ts">
-import {
-  PieChartOutlined,
-  MailOutlined
-} from "@ant-design/icons-vue";
-
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -35,10 +32,6 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
-  },
-  components: {
-    PieChartOutlined,
-    MailOutlined,
   },
 });
 </script>
