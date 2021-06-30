@@ -200,9 +200,9 @@ export default router;
 （2）新增路由相关页面
 
 ```html
-<!-- system/permission/index.vue -->
-<!-- system/role/index.vue -->
-<!-- system/user/index.vue -->
+<!-- views/system/permission/index.vue -->
+<!-- views/system/role/index.vue -->
+<!-- views/system/user/index.vue -->
 
 <template>
   <div>permission 权限列表</div>
@@ -217,11 +217,9 @@ export default router;
 
 ## vuex 控制路由和菜单
 
-（1）修改 store/interface/index.ts 文件
+（1）新增 store/interface/index.ts 文件
 
 ```js
-import { defineComponent } from 'vue'
-
 export interface AppState {
   count: number
 }
@@ -340,7 +338,29 @@ const settings: Module<SettingsState, RootStateTypes> = {
 export default settings;
 ```
 
-（4）修改 store/index.ts
+（4）新增 store/modules/app.ts
+
+```js
+import { Module } from 'vuex';
+import { AppState, RootStateTypes } from '../interface/index';
+
+const app: Module<AppState, RootStateTypes> = {
+  state() {
+    return {
+      count: 0
+    }
+  },
+  mutations: {
+    increment(state: AppState) {
+      state.count++
+    }
+  }
+}
+
+export default app;
+```
+
+（5）修改 store/index.ts
 
 ```js
 import { InjectionKey } from "vue";
@@ -663,12 +683,12 @@ export function setupAntdIcon(app: App<Element>): void {
 <style scoped></style>
 ```
 
-（5）实现效果展示
-![预览效果](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/sider.jpg)
+
+![实现效果展示](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/sider.jpg)
 
 ### Menu 导航菜单展开收起功能
 
-修改 layout/main/index.vue
+修改 layout/header/index.vue
 
 ```html
 <template>
@@ -777,6 +797,22 @@ export function setupAntdIcon(app: App<Element>): void {
 </a-layout-sider>
 ```
 
-实现效果展示
+修改components/HelloWorld.vue
+
+```js
+export default defineComponent({
+  name: 'HelloWorld',
+  setup: () => {
+    const store = useStore()
+    return {
+      count: computed(() => store.state.app.count), // 修改
+    }
+  }
+})
+```
+
+
+
 ![预览效果](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/sider_open.jpg)
+
 ![预览效果](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/sider_close.jpg)
