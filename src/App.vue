@@ -3,10 +3,15 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "App",
-};
+  import { useStore } from "store/index";
+
+  export default {
+    name: "App",
+    setup: () => {
+      const store = useStore();
+      store.dispatch("generateRoutes");
+    },
+  };
 </script>
 
-<style>
-</style>
+<style></style>
