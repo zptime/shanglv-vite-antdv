@@ -136,10 +136,31 @@ const router = createRouter({
   history: createWebHistory(),
   routes: constRoutes,
   scrollBehavior(to, from, savedPosition) {
-    // 始终滚动到顶部
-    return { top: 0 };
+    if (savedPosition) {
+      // 通过前进后台时才触发
+      return savedPosition
+    } else {
+      // 滚动到顶部
+      return { top: 0, behavior: 'smooth' }
+    }
   },
 });
+
+router.beforeEach((to, from, next) => {
+  // 可以对权限进行一些校验
+  if (to.path !== from.path) {
+    document.title = `${to.meta.title}`
+  }
+  next()
+})
+
+router.onError((error) => {
+  const pattern = /Loading chunk (\d)+ failed/g
+  const isChunkLoadFailed = error.message.match(pattern)
+  if (isChunkLoadFailed) {
+    location.reload()
+  }
+})
 
 // 删除/重置路由
 // getRoutes()：获取一个包含所有路由记录的数组

@@ -12,14 +12,19 @@
       class="trigger"
       @click="toggleCollapse"
     />
+    <Breadcrumb />
   </a-layout-header>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore } from "store/index";
+import Breadcrumb from "../header/breadcrumb.vue";
 
 export default defineComponent({
+   components: {
+    Breadcrumb,
+  },
   setup() {
     const store = useStore();
     const isCollapse = computed(() => store.state.settings.isCollapse);

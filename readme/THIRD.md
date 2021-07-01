@@ -1,6 +1,6 @@
 # Vite + TS + AntdV 搭建后台管理系统（三）
 
-## 基础配置
+## 1. 基础配置
 
 ### VSCode 2021 git bash 配置
 
@@ -35,7 +35,7 @@ npm install ramda
 npm install --save-dev types/npm-ramda#dist
 ```
 
-## 新增多个路由菜单
+## 2. 新增多个路由菜单
 
 （1）修改 router/index.ts 文件
 
@@ -215,7 +215,7 @@ export default router;
 <style></style>
 ```
 
-## vuex 控制路由和菜单
+## 3. vuex 控制路由和菜单
 
 （1）新增 store/interface/index.ts 文件
 
@@ -396,7 +396,7 @@ export function setupStore(app: App<Element>) {
 export default store;
 ```
 
-## Antdv2.x Icons 图标批量注册，动态引用
+## 4. Antdv2.x Icons 图标批量注册，动态引用
 
 ### 方式一：使用时注册
 
@@ -491,7 +491,7 @@ export function setupAntdIcon(app: App<Element>): void {
 }
 ```
 
-## 完善 sider 菜单组件
+## 5. 完善 sider 菜单组件
 
 ### 修改 App.vue
 
