@@ -1,5 +1,6 @@
 # Vite + TS + AntdV 搭建后台管理系统（三）
 
+> 侧栏菜单和路由配置
 ## 1. 基础配置
 
 ### VSCode 2021 git bash 配置

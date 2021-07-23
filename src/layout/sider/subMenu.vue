@@ -1,23 +1,26 @@
 <template>
   <a-sub-menu :key="menuInfo.name" v-bind="$attrs">
     <template #title>
-      <span>
-        <Icon v-if="menuInfo.meta.icon" :icon="menuInfo.meta.icon" />
-        <!-- <component v-if="menuInfo.meta.icon" :is="menuInfo.meta.icon" /> -->
-        <span>{{ menuInfo.meta.title }}</span>
-      </span>
+      <router-link :to="menuInfo.path">
+        <span>
+          <Icon
+            v-if="menuInfo.meta && menuInfo.meta.icon"
+            :icon="menuInfo.meta.icon"
+          />
+          <!-- <component v-if="menuInfo.meta.icon" :is="menuInfo.meta.icon" /> -->
+          <span>{{ menuInfo.meta && menuInfo.meta.title }}</span>
+        </span>
+      </router-link>
     </template>
-    <template v-for="item in menuInfo.children" :key="item.name">
-      <template v-if="!item.children">
-        <a-menu-item :key="item.name">
-          <Icon v-if="item.meta.icon" :icon="item.meta.icon" />
+    <template v-for="item in menuInfo.children">
+      <a-menu-item v-if="!item.children" :key="item.name">
+        <router-link :to="item.path">
+          <Icon v-if="item.meta && item.meta.icon" :icon="item.meta.icon" />
           <!-- <component v-if="item.meta.icon" :is="item.meta.icon" /> -->
-          <span>{{ item.meta.title }}</span>
-        </a-menu-item>
-      </template>
-      <template v-else>
-        <SubMenu :menu-info="item" :key="item.name" />
-      </template>
+          <span>{{ item.meta && item.meta.title }}</span>
+        </router-link>
+      </a-menu-item>
+      <SubMenu v-else :menu-info="item" :key="item.name" />
     </template>
   </a-sub-menu>
 </template>

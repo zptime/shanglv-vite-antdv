@@ -1,20 +1,18 @@
 <template>
   <a-menu mode="inline" theme="dark">
-    <template v-for="item in menus" :key="item.name">
-      <template v-if="!item.children">
-        <a-menu-item :key="item.name">
-          <span>{{ item.meta.title }}</span>
-        </a-menu-item>
-      </template>
-      <template v-else>
-        <SubMenu :menu-info="item" :key="item.name" />
-      </template>
+    <template v-for="item in menus">
+      <a-menu-item v-if="!item.children" :key="item.name">
+        <router-link :to="item.path">
+          <span>{{ item.meta && item.meta.title }}</span>
+        </router-link>
+      </a-menu-item>
+      <SubMenu v-else :menu-info="item" :key="item.name" />
     </template>
   </a-menu>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, getCurrentInstance } from "vue";
 import { useStore } from "store/index";
 import SubMenu from "./subMenu.vue";
 
@@ -23,6 +21,9 @@ export default defineComponent({
     const store = useStore();
     const routes = computed(() => store.state.routes.routes);
     const menus = computed(() => store.state.routes.menus);
+    const { ctx, proxy } = getCurrentInstance();
+    console.log(ctx);
+    console.log(proxy);
 
     return {
       routes,

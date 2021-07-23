@@ -1,5 +1,6 @@
 # Vite + TS + AntdV 搭建后台管理系统（一）
 
+> 基础框架搭建
 ## 1. Vite 项目初始化配置
 
 vite 官方中文文档：[https://cn.vitejs.dev/guide/](https://cn.vitejs.dev/guide/)

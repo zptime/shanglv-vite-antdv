@@ -41,7 +41,6 @@ export const dynamicRoutes = [
     id: "C02",
     path: "/system",
     component: Layout,
-    redirect: "/system/user",
     meta: { title: "系统管理", icon: "DesktopOutlined", role: ["admin"] },
     children: [
       {
@@ -126,7 +125,7 @@ export const dynamicRoutes = [
     ],
   },
   // 一定要放在最后，且在动态路由中添加，避免所有页面都被拦截到404
-  { path: "/:pathMatch(.*)*", redirect: "/404", meta: { hidden: true } },
+  // { path: "/:pathMatch(.*)*", redirect: "/404", meta: { hidden: true } },
 ];
 
 // createWebHashHistory (hash路由 Hash模式 #)
