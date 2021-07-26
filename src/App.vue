@@ -3,16 +3,18 @@
 </template>
 
 <script lang="ts">
+import { onMounted } from "vue";
 import { useStore } from "store/index";
 
 export default {
   name: "App",
-  setup: () => {
-    const store = useStore();
-    store.dispatch("generateRoutes");
+  setup() {
+    onMounted(() => {
+      const store = useStore();
+      store.dispatch("generateRoutes");
+    });
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

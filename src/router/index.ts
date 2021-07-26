@@ -1,5 +1,7 @@
+import * as R from "ramda";
 import { createRouter, createWebHistory } from "vue-router";
 import type { App } from "vue";
+import store from "store/index";
 
 const Layout = () => import("@/layout/index.vue");
 
@@ -20,6 +22,7 @@ export const constRoutes = [
   {
     id: "C01",
     path: "/",
+    name: "dashboard",
     component: Layout,
     redirect: "/dashboard",
     meta: { title: "首页", icon: "PieChartOutlined" },
@@ -99,6 +102,14 @@ export const dynamicRoutes = [
         name: "200",
         meta: { title: "成功页", role: ["admin"] },
         component: { template: "<div>200页面</div>" },
+        children: [
+          {
+            path: "200",
+            name: "one",
+            meta: { title: "成功页1", role: ["admin"] },
+            component: { template: "<div>200页面111</div>" },
+          }
+        ]
       },
       {
         id: "R031",
@@ -110,22 +121,21 @@ export const dynamicRoutes = [
     ],
   },
   {
-    path: "/permission",
+    path: "/test",
     component: Layout,
-    name: "permission",
-    redirect: "/permission/index",
+    redirect: "/test/index",
     meta: { title: "权限测试", icon: "QqOutlined", role: ["admin", "root"] },
     children: [
       {
         path: "index",
         component: { template: "<div>权限测试页</div>" },
-        name: "权限测试页",
+        name: "testIndex",
         meta: { title: "权限测试页", role: ["admin", "root"] },
       },
     ],
   },
   // 一定要放在最后，且在动态路由中添加，避免所有页面都被拦截到404
-  // { path: "/:pathMatch(.*)*", redirect: "/404", meta: { hidden: true } },
+  { path: "/:pathMatch(.*)*", redirect: "/404", meta: { hidden: true } },
 ];
 
 // createWebHashHistory (hash路由 Hash模式 #)
@@ -134,6 +144,7 @@ export const dynamicRoutes = [
 const router = createRouter({
   history: createWebHistory(),
   routes: constRoutes,
+  // routes: R.concat(constRoutes, dynamicRoutes),
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       // 通过前进后台时才触发
@@ -146,11 +157,17 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  // if (to.path === '/login' || to.path === '/register') {
+  //   next();
+  // } else {
+  //   // store.dispatch("generateRoutes");
+  //   // next({ path: to.path });
+  // }
   // 可以对权限进行一些校验
   if (to.path !== from.path) {
     document.title = `${to.meta.title}`
   }
-  next()
+  next();
 })
 
 router.onError((error) => {

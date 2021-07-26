@@ -63,10 +63,13 @@ const cleanRotes = (routes: any, roles: string[]) => {
           }
           return false;
         }, v.children);
-        return v;
-      } else {
-        return v;
+        // 解决子菜单只有一个的情况
+        if (v.children && v.children.length === 1) {
+          v.name = v.children[0].name;
+          v.children = [];
+        }
       }
+      return v;
     }
   }, routes);
   return accessRoutes;
