@@ -4,6 +4,24 @@
 
 > 主要技术：Vite2，Vue3，Vue Router 4.x，Vuex 4.x，Ant Design Vue 2.x，Typescript
 
+## 运行
+
+```
+# 安装依赖
+npm install
+# 在mac终端使用如下命令一直失败，可能是权限的问题
+sudo npm install
+
+
+# 本地启动
+npm run dev
+
+# 生产构建
+npm run build
+# 生产启动
+npm run serve
+```
+
 ## 开发文档
 
 1. [Vite + TS + AntdV 搭建后台管理系统（一）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/FIRST.md)

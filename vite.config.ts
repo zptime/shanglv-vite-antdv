@@ -79,7 +79,6 @@ export default defineConfig({
       "@ant-design/icons-vue",
       'ant-design-vue/es/date-picker/locale/zh_CN',
       'ant-design-vue/es/locale/zh_CN',
-      '@ant-design-vue/use',
     ],
   },
   css: {

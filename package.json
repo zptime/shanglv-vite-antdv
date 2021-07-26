@@ -1,4 +1,5 @@
 {
+  "name": "shanglv-vite-antdv",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -7,22 +8,22 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
-    "ant-design-vue": "^2.2.0-beta.2",
+    "ant-design-vue": "^2.2.2",
     "ramda": "^0.27.1",
     "vue": "^3.0.5",
-    "vue-router": "^4.0.8",
-    "vuex": "^4.0.1"
+    "vue-router": "^4.0.10",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@types/node": "^15.12.2",
-    "@types/ramda": "github:types/npm-ramda#dist",
-    "@vitejs/plugin-vue": "^1.2.3",
+    "@types/node": "^16.4.1",
+    "@types/ramda": "^0.27.44",
+    "@vitejs/plugin-vue": "^1.2.5",
     "@vue/compiler-sfc": "^3.0.5",
     "less": "^4.1.1",
-    "sass": "^1.34.1",
+    "sass": "^1.35.2",
     "sass-loader": "^12.1.0",
     "typescript": "^4.3.2",
-    "vite": "^2.3.7",
+    "vite": "^2.4.3",
     "vite-plugin-imp": "^2.0.7",
     "vue-tsc": "^0.0.24"
   }
