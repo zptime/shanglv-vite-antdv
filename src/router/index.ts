@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import type { App } from "vue";
+import store from "store/index";
 
 const Layout = () => import("@/layout/index.vue");
 
@@ -20,6 +21,7 @@ export const constRoutes = [
   {
     id: "C01",
     path: "/",
+    name: "dashboard",
     component: Layout,
     redirect: "/dashboard",
     meta: { title: "首页", icon: "PieChartOutlined" },
@@ -40,8 +42,8 @@ export const dynamicRoutes = [
   {
     id: "C02",
     path: "/system",
+    name: "system",
     component: Layout,
-    redirect: "/system/user",
     meta: { title: "系统管理", icon: "DesktopOutlined", role: ["admin"] },
     children: [
       {
@@ -90,6 +92,7 @@ export const dynamicRoutes = [
   {
     id: "C03",
     path: "/result",
+    name: "result",
     component: Layout,
     redirect: "/result/200",
     meta: { title: "结果页", icon: "SettingOutlined", role: ["admin"] },
@@ -100,6 +103,14 @@ export const dynamicRoutes = [
         name: "200",
         meta: { title: "成功页", role: ["admin"] },
         component: { template: "<div>200页面</div>" },
+        children: [
+          {
+            path: "200",
+            name: "one",
+            meta: { title: "成功页1", role: ["admin"] },
+            component: { template: "<div>200页面111</div>" },
+          }
+        ]
       },
       {
         id: "R031",
@@ -111,16 +122,36 @@ export const dynamicRoutes = [
     ],
   },
   {
-    path: "/permission",
+    path: "/components",
     component: Layout,
-    name: "permission",
-    redirect: "/permission/index",
+    name: "components",
+    meta: { title: "组件库", icon: "QqOutlined", role: ["admin", "root"] },
+    children: [
+      {
+        path: "table",
+        component: { template: "<div>表格展示页</div>" },
+        name: "table",
+        meta: { title: "表格", role: ["admin", "root"] },
+      },
+      {
+        path: "tree",
+        component: { template: "<div>树组件页</div>" },
+        name: "tree",
+        meta: { title: "树组件", role: ["admin", "root"] },
+      },
+    ],
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: Layout,
+    redirect: "/test/index",
     meta: { title: "权限测试", icon: "QqOutlined", role: ["admin", "root"] },
     children: [
       {
         path: "index",
         component: { template: "<div>权限测试页</div>" },
-        name: "权限测试页",
+        name: "testIndex",
         meta: { title: "权限测试页", role: ["admin", "root"] },
       },
     ],
@@ -137,6 +168,31 @@ const router = createRouter({
     return { top: 0 };
   },
 });
+
+// 路由守卫，进行菜单和权限的处理可进行菜单和权限的管理
+router.beforeEach((to, from, next) => {
+  if (to.path !== from.path) {
+    document.title = `${to.meta.title}`;
+  }
+
+  if (to.path === "/login" || to.path === "/register") {
+    next();
+  } else if (store.getters.routes.length <= 3) {
+    store.dispatch("generateRoutes");
+    // @ts-ignore
+    next({ ...to, replace: true });
+  } else {
+    next();
+  }
+});
+
+router.onError((error) => {
+  const pattern = /Loading chunk (\d)+ failed/g
+  const isChunkLoadFailed = error.message.match(pattern)
+  if (isChunkLoadFailed) {
+    location.reload()
+  }
+})
 
 // 删除/重置路由
 export function resetRoute(): void {

@@ -5,6 +5,8 @@ export interface SettingsState {
   logo: string,
   title: string,
   isCollapse: boolean,
+  selectedMenu: Array<string>,
+  openMenu: Array<string>,
 }
 export interface RoutesState {
   routes: Array<object>;

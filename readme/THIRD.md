@@ -1,5 +1,11 @@
 # Vite + TS + AntdV 搭建后台管理系统（三）
 
+> 在[（二）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/SECOND.md)的基础上进行开发
+
+> 主要功能概括：路由菜单动态配置；Antdv2.x Icons 图标批量注册，动态引用；sider 菜单组件动态取值；sider 菜单展开收起功能
+
+> Gihub 地址[开发分支：3-dev-asider]：https://github.com/zptime/shanglv-vite-antdv/tree/3-dev-asider
+
 ## 基础配置
 
 ### VSCode 2021 git bash 配置
@@ -341,21 +347,21 @@ export default settings;
 （4）新增 store/modules/app.ts
 
 ```js
-import { Module } from 'vuex';
-import { AppState, RootStateTypes } from '../interface/index';
+import { Module } from "vuex";
+import { AppState, RootStateTypes } from "../interface/index";
 
 const app: Module<AppState, RootStateTypes> = {
   state() {
     return {
-      count: 0
-    }
+      count: 0,
+    };
   },
   mutations: {
     increment(state: AppState) {
-      state.count++
-    }
-  }
-}
+      state.count++;
+    },
+  },
+};
 
 export default app;
 ```
@@ -375,13 +381,16 @@ import settings from "./modules/settings";
 // 定义注入类型
 const key: InjectionKey<Store<RootStateTypes>> = Symbol();
 
-const store = createStore<RootStateTypes>({
-  modules: {
-    app,
-    routes,
-    settings,
-  },
-});
+const store =
+  createStore <
+  RootStateTypes >
+  {
+    modules: {
+      app,
+      routes,
+      settings,
+    },
+  };
 
 // 将类型注入useStore
 // 以后项目中引用的均为自定义的这个，而不是vuex默认导出的useStore
@@ -525,7 +534,7 @@ export function setupAntdIcon(app: App<Element>): void {
 <template>
   <a-layout-sider>
     <Logo />
-    <Menu />
+    <menu />
   </a-layout-sider>
 </template>
 
@@ -750,7 +759,7 @@ export function setupAntdIcon(app: App<Element>): void {
 <template>
   <a-layout-sider v-model:collapsed="isCollapse">
     <Logo />
-    <Menu />
+    <menu />
   </a-layout-sider>
 </template>
 
@@ -798,18 +807,18 @@ export function setupAntdIcon(app: App<Element>): void {
 </a-layout-sider>
 ```
 
-修改components/HelloWorld.vue
+修改 components/HelloWorld.vue
 
 ```js
 export default defineComponent({
-  name: 'HelloWorld',
+  name: "HelloWorld",
   setup: () => {
-    const store = useStore()
+    const store = useStore();
     return {
       count: computed(() => store.state.app.count), // 修改
-    }
-  }
-})
+    };
+  },
+});
 ```
 
 实现效果展示

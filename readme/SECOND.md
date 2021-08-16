@@ -2,6 +2,10 @@
 
 > 在[Vite + TS + AntdV 从零开始搭建后台管理系统（一）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/FIRST.md)的基础上进行搭建，其中 Antdv 的引入方式选择的是全局引入
 
+> 主要功能概括：layout 页面；sider 左侧菜单；header 头部组件；footer 尾部组件；main 内容组件
+
+> Gihub 地址[开发分支：2-dev-layout]：https://github.com/zptime/shanglv-vite-antdv/tree/2-dev-layout
+
 ## 1. 基础布局搭建
 
 参考 Antdv Layout 布局文档 [https://2x.antdv.com/components/layout-cn](https://2x.antdv.com/components/layout-cn)
@@ -153,10 +157,10 @@ const routes = [
       {
         path: "/home",
         name: "home",
-        component: () => import("comps/HelloWorld.vue")
-      }
-    ]
-  }
+        component: () => import("comps/HelloWorld.vue"),
+      },
+    ],
+  },
 ];
 ```
 

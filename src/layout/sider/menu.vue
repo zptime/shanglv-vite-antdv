@@ -1,36 +1,86 @@
 <template>
-  <a-menu mode="inline" theme="dark">
-    <template v-for="item in menus" :key="item.name">
-      <template v-if="!item.children">
-        <a-menu-item :key="item.name">
-          <span>{{ item.meta.title }}</span>
-        </a-menu-item>
-      </template>
-      <template v-else>
-        <SubMenu :menu-info="item" :key="item.name" />
-      </template>
+  <a-menu
+    mode="inline"
+    theme="dark"
+    @click="handleMenuClick"
+    v-model:openKeys="openKeys"
+    v-model:selectedKeys="selectedKeys"
+  >
+    <template v-for="item in menus">
+      <!-- 一级菜单 -->
+      <a-menu-item
+        v-if="
+          !item.children ||
+          (item.children && item.children.length && item.children.length === 1)
+        "
+        :key="item.name"
+      >
+        <!-- 注意：此处to属性中用的是name值，而不是path；如果用path,
+        router/index.ts中的子菜单path应该定义为“/父菜单路由/子菜单路由”，例如：将“role”改为“/system/role”。 -->
+        <router-link
+          :to="{
+            name:
+              item.children &&
+              item.children.length &&
+              item.children.length === 1
+                ? item.children[0].name
+                : item.name,
+          }"
+        >
+          <span>{{ item.meta && item.meta.title }}</span>
+        </router-link>
+      </a-menu-item>
+      <!-- 子级菜单 -->
+      <SubMenu v-else :menu-info="item" :key="item.name" />
     </template>
   </a-menu>
 </template>
 
 <script lang="ts">
-  import { defineComponent, computed } from "vue";
-  import { useStore } from "store/index";
-  import SubMenu from "./subMenu.vue";
+ import * as R from "ramda";
+import { defineComponent, computed, toRefs, reactive } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "store/index";
+import SubMenu from "./subMenu.vue";
 
-  export default defineComponent({
-    setup() {
-      const store = useStore();
-      const routes = computed(() => store.state.routes.routes);
-      const menus = computed(() => store.state.routes.menus);
+export default defineComponent({
+  setup() {
+    const store = useStore();
+    const routes = computed(() => store.state.routes.routes);
+    const menus = computed(() => store.state.routes.menus);
 
-      return {
-        routes,
-        menus,
-      };
-    },
-    components: {
-      SubMenu,
-    },
-  });
+    // vue-router获取路由，查看路由方法
+    const { options, getRoutes } = useRouter();
+    console.log("getRoutes", getRoutes());
+    console.log("options.routes", options.routes);
+
+    // 通过localStorage保存状态
+    const state = reactive({
+      selectedKeys: localStorage.getItem("selectedMenu")
+        ? [localStorage.getItem("selectedMenu")]
+        : [],
+      openKeys: localStorage.getItem("openMenu")
+        ? R.split(",", localStorage.getItem("openMenu"))
+        : [],
+    });
+
+    const handleMenuClick = (e: Event) => {
+      const { key } = e;
+      // 点击时，将状态保存到vuex和localStorage
+      store.commit("SELECTED_MENU", key);
+      store.commit("OPEN_MENU", state.openKeys);
+    };
+
+    return {
+      routes,
+      menus,
+
+      ...toRefs(state),
+      handleMenuClick,
+    };
+  },
+  components: {
+    SubMenu,
+  },
+});
 </script>

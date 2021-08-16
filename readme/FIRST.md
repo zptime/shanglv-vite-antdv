@@ -1,5 +1,9 @@
 # Vite + TS + AntdV 从零开始搭建后台管理系统（一）
 
+> 主要功能概括：vite 项目初始化配置；vuex 安装及配置；vue router4.x 安装及配置；Sass/Scss 预处理器；Ant Design of Vue 安装及配置
+
+> Gihub 地址[开发分支：1-dev-init]：https://github.com/zptime/shanglv-vite-antdv/tree/1-dev-init
+
 ## 1. Vite 项目初始化配置
 
 vite 官方中文文档：[https://cn.vitejs.dev/guide/](https://cn.vitejs.dev/guide/)
@@ -56,18 +60,21 @@ export interface State {
 // 定义注入类型
 const key: InjectionKey<Store<State>> = Symbol();
 
-const store = createStore<State>({
-  state() {
-    return {
-      count: 0,
-    };
-  },
-  mutations: {
-    increment(state: State) {
-      state.count++;
+const store =
+  createStore <
+  State >
+  {
+    state() {
+      return {
+        count: 0,
+      };
     },
-  },
-});
+    mutations: {
+      increment(state: State) {
+        state.count++;
+      },
+    },
+  };
 
 // 将类型注入useStore
 // 以后项目中引用的均为自定义的这个，而不是vuex默认导出的useStore
