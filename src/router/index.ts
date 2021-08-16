@@ -1,11 +1,12 @@
 import * as R from "ramda";
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import type { App } from "vue";
 import store from "store/index";
 
 const Layout = () => import("@/layout/index.vue");
 
 // 通用路由表
+// export const constRoutes: Array<RouteRecordRaw> = [
 export const constRoutes = [
   {
     path: "/login",
@@ -43,6 +44,7 @@ export const dynamicRoutes = [
   {
     id: "C02",
     path: "/system",
+    name: "system",
     component: Layout,
     meta: { title: "系统管理", icon: "DesktopOutlined", role: ["admin"] },
     children: [
@@ -92,6 +94,7 @@ export const dynamicRoutes = [
   {
     id: "C03",
     path: "/result",
+    name: "result",
     component: Layout,
     redirect: "/result/200",
     meta: { title: "结果页", icon: "SettingOutlined", role: ["admin"] },
@@ -121,7 +124,28 @@ export const dynamicRoutes = [
     ],
   },
   {
+    path: "/components",
+    component: Layout,
+    name: "components",
+    meta: { title: "组件库", icon: "QqOutlined", role: ["admin", "root"] },
+    children: [
+      {
+        path: "table",
+        component: { template: "<div>表格展示页</div>" },
+        name: "table",
+        meta: { title: "表格", role: ["admin", "root"] },
+      },
+      {
+        path: "tree",
+        component: { template: "<div>树组件页</div>" },
+        name: "tree",
+        meta: { title: "树组件", role: ["admin", "root"] },
+      },
+    ],
+  },
+  {
     path: "/test",
+    name: "test",
     component: Layout,
     redirect: "/test/index",
     meta: { title: "权限测试", icon: "QqOutlined", role: ["admin", "root"] },
@@ -151,24 +175,28 @@ const router = createRouter({
       return savedPosition
     } else {
       // 滚动到顶部
-      return { top: 0, behavior: 'smooth' }
+      return { top: 0, behavior: "smooth" }
     }
   },
 });
 
+// 路由守卫，进行菜单和权限的处理
 router.beforeEach((to, from, next) => {
-  // if (to.path === '/login' || to.path === '/register') {
-  //   next();
-  // } else {
-  //   // store.dispatch("generateRoutes");
-  //   // next({ path: to.path });
-  // }
-  // 可以对权限进行一些校验
   if (to.path !== from.path) {
-    document.title = `${to.meta.title}`
+    document.title = `${to.meta.title}`;
   }
-  next();
-})
+
+  if (to.path === "/login" || to.path === "/register") {
+    next();
+  } else if (store.getters.routes.length <= 3) {
+    // 防止无限循环，要根据条件停止：通用路由表长度3
+    store.dispatch("generateRoutes");
+    // @ts-ignore
+    next({ ...to, replace: true });
+  } else {
+    next();
+  }
+});
 
 router.onError((error) => {
   const pattern = /Loading chunk (\d)+ failed/g

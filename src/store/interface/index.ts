@@ -1,25 +1,26 @@
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 // import type { RouteRecordRaw } from 'vue-router'
 
 type Component<T extends any = any> =
   | ReturnType<typeof defineComponent>
-  | (() => Promise<typeof import('*.vue')>)
-  | (() => Promise<T>)
-
+  | (() => Promise<typeof import("*.vue")>)
+  | (() => Promise<T>);
 
 export interface AppState {
-  count: number
+  count: number;
 }
 
 export interface SettingsState {
-  logo: string,
-  title: string,
-  isCollapse: boolean,
+  logo: string;
+  title: string;
+  isCollapse: boolean;
+  selectedMenu: Array<string>;
+  openMenu: Array<string>;
 }
 
 interface RouteMeta {
-  title: string,
-  icon: string,
+  title: string;
+  icon: string;
   // auth: string[]
   // isLink?: string
   // isAffix: boolean
@@ -30,14 +31,14 @@ interface RouteMeta {
 }
 
 export interface RouteRecord {
-  id: string,
-  name?: string,
-  meta?: RouteMeta,
-  children?: RouteRecord[],
-  orderId?: number,
-  path?: string
-  component?: Component | string
-  redirect?: string
+  id: string;
+  name?: string;
+  meta?: RouteMeta;
+  children?: RouteRecord[];
+  orderId?: number;
+  path?: string;
+  component?: Component | string;
+  redirect?: string;
 }
 
 // @ts-ignore
@@ -61,7 +62,7 @@ export interface RoutesState {
 
 // 主接口(顶级类型声明)
 export interface RootStateTypes {
-  app: AppState
-  routes: RoutesState
-  settings: SettingsState
+  app: AppState;
+  routes: RoutesState;
+  settings: SettingsState;
 }

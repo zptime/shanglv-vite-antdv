@@ -4,6 +4,10 @@
 
 ## 侧栏菜单路由导航(router-link)
 
+> 之前只是完成了菜单的展示，但是对应的路由功能没有实现，现在使用 routerLink 实现路由导航，主要使用 to 属性控制目标路由的链接。
+
+> 官方 API 文档：https://router.vuejs.org/zh/api/#router-link
+
 1. 修改 layout/sider/menu.vue 文件
 
 ```html
@@ -45,6 +49,8 @@ export default defineComponent({
 </script>
 ```
 
+说明：VueRouter 4.x 中获取路由，查看路由的方法为 useRouter()，useRouter().getRoutes()，useRouter().options.routes 等
+
 2.  修改 layout/sider/subMenu.vue 文件
 
 ```html
@@ -57,7 +63,6 @@ export default defineComponent({
           v-if="menuInfo.meta && menuInfo.meta.icon"
           :icon="menuInfo.meta.icon"
         />
-        <!-- <component v-if="menuInfo.meta.icon" :is="menuInfo.meta.icon" /> -->
         <span>{{ menuInfo.meta && menuInfo.meta.title }}</span>
       </span>
     </template>
@@ -67,7 +72,6 @@ export default defineComponent({
         <a-menu-item v-if="!item.children" :key="item.name">
           <router-link :to="{ name: item.name }">
             <Icon v-if="item.meta && item.meta.icon" :icon="item.meta.icon" />
-            <!-- <component v-if="item.meta.icon" :is="item.meta.icon" /> -->
             <span>{{ item.meta && item.meta.title }}</span>
           </router-link>
         </a-menu-item>
@@ -90,7 +94,7 @@ export default defineComponent({
 
 ## 侧栏菜单子路由处理
 
-之前的首页、权限测试页都只有一个子菜单，在这种情况展示两级，就不太合理了。需要处理一下，只展示一级，父菜单路由直接取值子菜单的路由。
+> 之前的首页、权限测试页都只有一个子菜单，在这种情况展示两级，就不太合理了。对于这种情况，需要处理一下，只展示一级，父菜单路由直接取值子菜单的路由。
 
 1. 修改 layout/sider/menu.vue 文件
 
@@ -148,35 +152,129 @@ export default defineComponent({
 </template>
 ```
 
-## 菜单状态保存（展开、选中）
-
-
 ## 动态路由注册刷新白屏
 
-问题：点击刷新，vue-router会重新初始化，之前动态addRoute的路由就不存在了，此时访问一个不存在的页面，就导致页面空白了。
+问题：点击刷新，vue-router 会重新初始化，之前动态 addRoute 的路由就不存在了，此时访问一个不存在的页面，就导致页面空白了。
 
-解决：把加载菜单信息放在router的全局守卫beforeEach中。
+解决：把加载菜单信息放在 router 的全局守卫 beforeEach 中。
 
-注意：防止无限循环，要根据条件停止
+注意：防止无限循环，要根据条件停止。我的停止条件就是 store.getters.routes.length > 3，因为默认的通用路由长度为 3，长度小于 3 时，需要加载动态路由表；长度大于 3，代表已经添加过了，无需再添加。
+
+1. 修改 App.vue 文件
+
+```html
+<template>
+  <router-view />
+</template>
+
+<script lang="ts">
+  export default {
+    name: "App",
+    setup() {},
+  };
+</script>
+
+<style></style>
+```
+
+2. 修改 router/index.ts 文件
 
 ```js
-// 路由守卫，只有已登录的用户才能进入系统
-router.beforeEach(async (to: any, from: any, next: { (): void; (): void }) => {
-  if (to.path === '/login' || to.path === '/register') {
+import store from "store/index";
+
+router.beforeEach((to, from, next) => {
+  if (to.path !== from.path) {
+    document.title = `${to.meta.title}`;
+  }
+
+  if (to.path === "/login" || to.path === "/register") {
     next();
-  } else if (sessionStorage.getItem('token')) {
-    if (store.getters.addRouters.length === 0) {
-      const roles = JSON.parse(localStorage.getItem('roleNames') as string);
-      const accessRoutes = await store.dispatch('GenerateRoutes', { roles });
-      router.addRoutes(accessRoutes);
-      // @ts-ignore
-      next({ path: to.path });
-    } else {
-      next();
-    }
-    next();
+  } else if (store.getters.routes.length <= 3) {
+    store.dispatch("generateRoutes");
+    // @ts-ignore
+    next({ ...to, replace: true });
   } else {
-    router.push({ name: 'login' });
+    next();
   }
 });
 ```
+
+## 菜单状态保存（展开、选中）
+
+每次刷新页面，菜单展开的状态和被选中的状态就丢失了，需要处理一下。我采用的是 localStorage 和 Vuex 结合使用
+
+1. 修改 layout/sider/menu.vue 文件
+
+```html
+<template>
+  <a-menu
+    @click="handleMenuClick"
+    v-model:openKeys="openKeys"
+    v-model:selectedKeys="selectedKeys"
+  >
+    // ...
+  </a-menu>
+</template>
+
+<script lang="ts">
+  import * as R from "ramda";
+  import { defineComponent, toRefs, reactive } from "vue";
+  import { useStore } from "store/index";
+
+  export default defineComponent({
+    setup() {
+      const store = useStore();
+      // 通过localStorage保存状态
+      const state = reactive({
+        selectedKeys: localStorage.getItem("selectedMenu")
+          ? [localStorage.getItem("selectedMenu")]
+          : [],
+        openKeys: localStorage.getItem("openMenu")
+          ? R.split(",", localStorage.getItem("openMenu"))
+          : [],
+      });
+
+      const handleMenuClick = (e: Event) => {
+        const { key } = e;
+        // 点击时，将状态保存到vuex和localStorage
+        store.commit("SELECTED_MENU", key);
+        store.commit("OPEN_MENU", state.openKeys);
+      };
+
+      return {
+        ...toRefs(state),
+        handleMenuClick,
+      };
+    },
+  });
+</script>
+```
+
+2. 修改 store/modules/settings.ts 文件
+
+```js
+const settings: Module<SettingsState, RootStateTypes> = {
+  state() {
+    return {
+      selectedMenu: [],
+      openMenu: [],
+    };
+  },
+  getters: {
+    selectedMenu: (state) => state.selectedMenu,
+    openMenu: (state) => state.openMenu,
+  },
+  mutations: {
+    SELECTED_MENU(state, data) {
+      localStorage.setItem("selectedMenu", data);
+      state.selectedMenu = data;
+    },
+    OPEN_MENU(state, data) {
+      localStorage.setItem("openMenu", data);
+      state.openMenu = data;
+    },
+  },
+};
+```
+
+![预览效果](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/sider_status_keep.png)

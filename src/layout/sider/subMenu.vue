@@ -1,5 +1,5 @@
 <template>
-  <a-sub-menu>
+  <a-sub-menu :key="menuInfo.name">
     <template #title>
       <span>
         <Icon

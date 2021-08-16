@@ -31,6 +31,8 @@ const routes: Module<RoutesState, RootStateTypes> = {
         R.forEach((route: RouteRecordRaw) => {
           router.addRoute(route);
         }, routes);
+        // console.log('routes', routes);
+        // console.log('menus', menus);
         commit("SET_ROUTE", routes);
         commit("SET_MENU", menus);
         resolve(routes);
