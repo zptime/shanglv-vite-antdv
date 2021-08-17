@@ -1,8 +1,12 @@
-# Vite + TS + AntdV 搭建后台管理系统（四）
+# Vite + TS + AntdV 从零开始搭建后台管理系统（四）
 
-> 侧栏菜单功能完善：之前完成了侧栏菜单的基本展示，还有一些可完善、可优化的地方
+> 在[（三）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/THIRD.md)的基础上，进行侧栏菜单功能完善，之前完成了侧栏菜单的基本展示，还有一些可完善、可优化的地方。此分支路由表有更新，具体查看源码。
 
-## 侧栏菜单路由导航(router-link)
+> 主要功能概括：路由导航(router-link)；唯一子菜单处理；动态路由刷新白屏；菜单状态保存
+
+> Gihub 地址[开发分支：4-dev-menu]：https://github.com/zptime/shanglv-vite-antdv/tree/4-dev-menu
+
+## 侧栏菜单路由导航(router-link) 
 
 > 之前只是完成了菜单的展示，但是对应的路由功能没有实现，现在使用 routerLink 实现路由导航，主要使用 to 属性控制目标路由的链接。
 
@@ -12,28 +16,20 @@
 
 ```html
 <template>
-  <!-- 完整 -->
   <a-menu mode="inline" theme="dark">
     <template v-for="item in menus">
       <!-- 一级菜单 -->
       <a-menu-item v-if="!item.children" :key="item.name">
+        <!-- 注意：此处to属性中用的是name值，而不是path；如果用path,
+        router/index.ts中的子菜单path应该定义为“/父菜单路由/子菜单路由”，例如：将“role”改为“/system/role”。 -->
         <router-link :to="{ name: item.name }">
           <span>{{ item.meta && item.meta.title }}</span>
         </router-link>
       </a-menu-item>
-      <!-- 子级菜单 -->
+       <!-- 子级菜单 -->
       <SubMenu v-else :menu-info="item" :key="item.name" />
     </template>
   </a-menu>
-
-  <!-- 局部 -->
-  <a-menu-item v-if="!item.children" :key="item.name">
-    // 注意：此处to属性中用的是name值，而不是path；如果用path,
-    router/index.ts中的子菜单path应该定义为“/父菜单路由/子菜单路由”，例如：将“role”改为“/system/role”。
-    <router-link :to="{ name: item.name }">
-      <span>{{ item.meta && item.meta.title }}</span>
-    </router-link>
-  </a-menu-item>
 </template>
 
 <script lang="ts>
@@ -42,8 +38,8 @@ export default defineComponent({
   setup() {
     // vue-router获取路由，查看路由方法
     const { options, getRoutes } = useRouter();
-    console.log('getRoutes', getRoutes());
-    console.log('options.routes', options.routes);
+    console.log("getRoutes", getRoutes());
+    console.log("options.routes", options.routes);
   }
 })
 </script>
@@ -55,33 +51,6 @@ export default defineComponent({
 
 ```html
 <template>
-  <!-- 完整 -->
-  <a-sub-menu>
-    <template #title>
-      <span>
-        <Icon
-          v-if="menuInfo.meta && menuInfo.meta.icon"
-          :icon="menuInfo.meta.icon"
-        />
-        <span>{{ menuInfo.meta && menuInfo.meta.title }}</span>
-      </span>
-    </template>
-    <template v-if="menuInfo.children && menuInfo.children.length">
-      <template v-for="item in menuInfo.children">
-        <!-- 不存在子级的菜单 -->
-        <a-menu-item v-if="!item.children" :key="item.name">
-          <router-link :to="{ name: item.name }">
-            <Icon v-if="item.meta && item.meta.icon" :icon="item.meta.icon" />
-            <span>{{ item.meta && item.meta.title }}</span>
-          </router-link>
-        </a-menu-item>
-        <!-- 存在子级菜单 -->
-        <SubMenu v-else :menu-info="item" :key="item.path" />
-      </template>
-    </template>
-  </a-sub-menu>
-
-  <!-- 局部 -->
   <!-- 不存在子级的菜单 -->
   <a-menu-item v-if="!item.children" :key="item.name">
     <router-link :to="{ name: item.name }">
@@ -89,12 +58,16 @@ export default defineComponent({
       <span>{{ item.meta && item.meta.title }}</span>
     </router-link>
   </a-menu-item>
+  <!-- 存在子级菜单 -->
+  <SubMenu v-else :menu-info="item" :key="item.name" />
 </template>
 ```
 
 ## 侧栏菜单子路由处理
 
 > 之前的首页、权限测试页都只有一个子菜单，在这种情况展示两级，就不太合理了。对于这种情况，需要处理一下，只展示一级，父菜单路由直接取值子菜单的路由。
+
+判断条件：是否子菜单 && 子菜单个数 === 1
 
 1. 修改 layout/sider/menu.vue 文件
 
@@ -170,7 +143,6 @@ export default defineComponent({
 <script lang="ts">
   export default {
     name: "App",
-    setup() {},
   };
 </script>
 

@@ -1,6 +1,13 @@
 # Vite + TS + AntdV 搭建后台管理系统（三）
 
-> 侧栏菜单和路由配置
+> 在[（二）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/SECOND.md)的基础上进行开发
+
+> 主要功能概括：路由菜单动态配置；Antdv2.x Icons 图标批量注册，动态引用；sider 菜单组件动态取值；sider 菜单展开收起功能
+
+> Gihub 地址[开发分支：3-dev-asider]：https://github.com/zptime/shanglv-vite-antdv/tree/3-dev-asider
+
+## 基础配置
+
 ## 1. 基础配置
 
 ### VSCode 2021 git bash 配置

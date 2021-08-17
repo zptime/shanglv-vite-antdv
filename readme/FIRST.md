@@ -1,4 +1,8 @@
-# Vite + TS + AntdV 搭建后台管理系统（一）
+# Vite + TS + AntdV 从零开始搭建后台管理系统（一）
+
+> 主要功能概括：vite 项目初始化配置；vuex 安装及配置；vue router4.x 安装及配置；Sass/Scss 预处理器；Ant Design of Vue 安装及配置
+
+> Gihub 地址[开发分支：1-dev-init]：https://github.com/zptime/shanglv-vite-antdv/tree/1-dev-init
 
 > 基础框架搭建
 ## 1. Vite 项目初始化配置

@@ -1,12 +1,14 @@
-# Vite + TS + AntdV 搭建后台管理系统（二）
+# Vite + TS + AntdV 从零开始搭建后台管理系统（二）
 
-> 基础布局搭建
+> 在[Vite + TS + AntdV 从零开始搭建后台管理系统（一）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/FIRST.md)的基础上进行搭建，其中 Antdv 的引入方式选择的是全局引入
 
-> 在[（一）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/FIRST.md)的基础上，Antdv 的引入方式选择的是全局引入
+> 主要功能概括：layout 页面；sider 左侧菜单；header 头部组件；footer 尾部组件；main 内容组件
+
+> Gihub 地址[开发分支：2-dev-layout]：https://github.com/zptime/shanglv-vite-antdv/tree/2-dev-layout
 
 ## 1. 基础布局搭建
 
-Antdv Layout 布局文档：[https://2x.antdv.com/components/layout-cn](https://2x.antdv.com/components/layout-cn)
+参考 Antdv Layout 布局文档 [https://2x.antdv.com/components/layout-cn](https://2x.antdv.com/components/layout-cn)
 
 在 src 目录下新建 layout/index.vue 文件
 
