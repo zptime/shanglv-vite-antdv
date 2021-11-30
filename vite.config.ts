@@ -1,15 +1,15 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import path from 'path'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import path from "path";
 // import vitePluginImp from 'vite-plugin-imp'
 
-const resolve = (dir: string) => path.join(__dirname, dir)
+const resolve = (dir: string) => path.join(__dirname, dir);
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-		vue(),
-		// vitePluginImp({
+    vue(),
+    // vitePluginImp({
     //   libList: [
     //     {
     //       libName: 'ant-design-vue',
@@ -18,27 +18,28 @@ export default defineConfig({
     //     },
     //   ],
     // })
-	],
+  ],
   resolve: {
-		alias: {
-			vue: "vue/dist/vue.esm-bundler.js",
-			'@': resolve('src'),
-			comps: resolve('src/components'),
-			apis: resolve('src/apis'),
-			views: resolve('src/views'),
-			utils: resolve('src/utils'),
-			routes: resolve('src/routes'),
-			styles: resolve('src/styles'),
-			store: resolve('src/store')
-		}
-	},
-	// css: {
+    alias: {
+      // '/@src': path.resolve(__dirname, 'src'), // 好多都采用"/"开头，设置别名？？？
+      vue: "vue/dist/vue.esm-bundler.js",
+      "@": resolve("src"),
+      comps: resolve("src/components"),
+      apis: resolve("src/apis"),
+      views: resolve("src/views"),
+      utils: resolve("src/utils"),
+      routes: resolve("src/routes"),
+      styles: resolve("src/styles"),
+      store: resolve("src/store"),
+    },
+  },
+  // css: {
   //   preprocessorOptions: {
   //     less: {
-	// 			// 定制主题
+  // 			// 定制主题
   //       modifyVars: { 'primary-color': '#1188ff' },
   //       javascriptEnabled: true,
   //     },
   //   },
   // },
-})
+});

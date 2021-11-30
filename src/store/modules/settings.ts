@@ -9,6 +9,7 @@ const settings: Module<SettingsState, RootStateTypes> = {
       isCollapse: false,
       selectedMenu: [],
       openMenu: [],
+      breadcrumbList: [],
     };
   },
   getters: {
@@ -17,10 +18,10 @@ const settings: Module<SettingsState, RootStateTypes> = {
     isCollapse: (state) => state.isCollapse,
     selectedMenu: (state) => state.selectedMenu,
     openMenu: (state) => state.openMenu,
-    
+    breadcrumbList: (state) => state.breadcrumbList,
   },
   mutations: {
-    TOOGLE_COLLAPSE(state) {
+    TOGGLE_COLLAPSE(state) {
       state.isCollapse = !state.isCollapse;
     },
     SELECTED_MENU(state, data) {
@@ -31,10 +32,15 @@ const settings: Module<SettingsState, RootStateTypes> = {
       localStorage.setItem("openMenu", data);
       state.openMenu = data;
     },
+    SET_BREADCRUMB(state, data) {
+      localStorage.setItem("breadcrumbList", data);
+      console.log("breadcrumbList", data);
+      state.breadcrumbList = data;
+    },
   },
   actions: {
     toggleCollapse({ commit }) {
-      commit("TOOGLE_COLLAPSE");
+      commit("TOGGLE_COLLAPSE");
     },
   },
 };

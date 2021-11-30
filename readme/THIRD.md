@@ -8,6 +8,8 @@
 
 ## 基础配置
 
+## 1. 基础配置
+
 ### VSCode 2021 git bash 配置
 
 旧版 VScode 的 git bash 终端配置如下：
@@ -41,7 +43,7 @@ npm install ramda
 npm install --save-dev types/npm-ramda#dist
 ```
 
-## 新增多个路由菜单
+## 2. 新增多个路由菜单
 
 （1）修改 router/index.ts 文件
 
@@ -221,7 +223,7 @@ export default router;
 <style></style>
 ```
 
-## vuex 控制路由和菜单
+## 3. vuex 控制路由和菜单
 
 （1）新增 store/interface/index.ts 文件
 
@@ -330,13 +332,13 @@ const settings: Module<SettingsState, RootStateTypes> = {
     isCollapse: (state) => state.isCollapse,
   },
   mutations: {
-    TOOGLE_COLLAPSE(state) {
+    TOGGLE_COLLAPSE(state) {
       state.isCollapse = !state.isCollapse;
     },
   },
   actions: {
     toggleCollapse({ commit }) {
-      commit("TOOGLE_COLLAPSE");
+      commit("TOGGLE_COLLAPSE");
     },
   },
 };
@@ -347,21 +349,21 @@ export default settings;
 （4）新增 store/modules/app.ts
 
 ```js
-import { Module } from "vuex";
-import { AppState, RootStateTypes } from "../interface/index";
+import { Module } from 'vuex';
+import { AppState, RootStateTypes } from '../interface/index';
 
 const app: Module<AppState, RootStateTypes> = {
   state() {
     return {
-      count: 0,
-    };
+      count: 0
+    }
   },
   mutations: {
     increment(state: AppState) {
-      state.count++;
-    },
-  },
-};
+      state.count++
+    }
+  }
+}
 
 export default app;
 ```
@@ -381,16 +383,13 @@ import settings from "./modules/settings";
 // 定义注入类型
 const key: InjectionKey<Store<RootStateTypes>> = Symbol();
 
-const store =
-  createStore <
-  RootStateTypes >
-  {
-    modules: {
-      app,
-      routes,
-      settings,
-    },
-  };
+const store = createStore<RootStateTypes>({
+  modules: {
+    app,
+    routes,
+    settings,
+  },
+});
 
 // 将类型注入useStore
 // 以后项目中引用的均为自定义的这个，而不是vuex默认导出的useStore
@@ -405,7 +404,7 @@ export function setupStore(app: App<Element>) {
 export default store;
 ```
 
-## Antdv2.x Icons 图标批量注册，动态引用
+## 4. Antdv2.x Icons 图标批量注册，动态引用
 
 ### 方式一：使用时注册
 
@@ -500,7 +499,7 @@ export function setupAntdIcon(app: App<Element>): void {
 }
 ```
 
-## 完善 sider 菜单组件
+## 5. 完善 sider 菜单组件
 
 ### 修改 App.vue
 
@@ -534,7 +533,7 @@ export function setupAntdIcon(app: App<Element>): void {
 <template>
   <a-layout-sider>
     <Logo />
-    <menu />
+    <Menu />
   </a-layout-sider>
 </template>
 
@@ -692,9 +691,8 @@ export function setupAntdIcon(app: App<Element>): void {
 <style scoped></style>
 ```
 
-（5）实现效果展示
 
-![预览效果](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/sider.jpg)
+![实现效果展示](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/sider.jpg)
 
 ### Menu 导航菜单展开收起功能
 
@@ -727,7 +725,7 @@ export function setupAntdIcon(app: App<Element>): void {
       const store = useStore();
       const isCollapse = computed(() => store.state.settings.isCollapse);
       const toggleCollapse = () => {
-        store.commit("TOOGLE_COLLAPSE");
+        store.commit("TOGGLE_COLLAPSE");
         // console.log("isCollapse...", isCollapse.value);
       };
 
@@ -759,7 +757,7 @@ export function setupAntdIcon(app: App<Element>): void {
 <template>
   <a-layout-sider v-model:collapsed="isCollapse">
     <Logo />
-    <menu />
+    <Menu />
   </a-layout-sider>
 </template>
 
@@ -807,21 +805,21 @@ export function setupAntdIcon(app: App<Element>): void {
 </a-layout-sider>
 ```
 
-修改 components/HelloWorld.vue
+修改components/HelloWorld.vue
 
 ```js
 export default defineComponent({
-  name: "HelloWorld",
+  name: 'HelloWorld',
   setup: () => {
-    const store = useStore();
+    const store = useStore()
     return {
       count: computed(() => store.state.app.count), // 修改
-    };
-  },
-});
+    }
+  }
+})
 ```
 
-实现效果展示
+
 
 ![预览效果](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/sider_open.jpg)
 

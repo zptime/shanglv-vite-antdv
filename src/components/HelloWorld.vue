@@ -8,29 +8,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed } from "vue";
 // 注意此处，引入的useStore为自定义的，而不是vuex默认导出的；为了引入方便，此处需要配置别名
 // import { useStore } from 'vuex'
-import { useStore } from 'store/index'
+import { useStore } from "store/index";
 
 export default defineComponent({
-  name: 'HelloWorld',
+  name: "HelloWorld",
   props: {
     msg: {
       type: String,
       // required: true,
-      default: 'Hello Vue 3 + TypeScript + Vite'
-    }
+      default: "Hello Vue 3 + TypeScript + Vite",
+    },
   },
   setup: () => {
-    const store = useStore()
+    const store = useStore();
     return {
       count: computed(() => store.state.app.count),
-      increment: () => store.commit('increment'),
-    }
-  }
-})
+      increment: () => store.commit("increment"),
+    };
+  },
+});
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

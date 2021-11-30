@@ -1,10 +1,12 @@
-import { createRouter, createWebHistory } from "vue-router";
+import * as R from "ramda";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import type { App } from "vue";
 import store from "store/index";
 
 const Layout = () => import("@/layout/index.vue");
 
 // 通用路由表
+// export const constRoutes: Array<RouteRecordRaw> = [
 export const constRoutes = [
   {
     path: "/login",
@@ -109,8 +111,8 @@ export const dynamicRoutes = [
             name: "one",
             meta: { title: "成功页1", role: ["admin"] },
             component: { template: "<div>200页面111</div>" },
-          }
-        ]
+          },
+        ],
       },
       {
         id: "R031",
@@ -146,7 +148,11 @@ export const dynamicRoutes = [
     name: "test",
     component: Layout,
     redirect: "/test/index",
-    meta: { title: "权限测试", icon: "QqOutlined", role: ["admin", "root"] },
+    meta: {
+      title: "权限测试",
+      icon: "AppstoreOutlined",
+      role: ["admin", "root"],
+    },
     children: [
       {
         path: "index",
@@ -160,16 +166,25 @@ export const dynamicRoutes = [
   { path: "/:pathMatch(.*)*", redirect: "/404", meta: { hidden: true } },
 ];
 
+// createWebHashHistory (hash路由 Hash模式 #)
+// createWebHistory (history路由 HTML5 模式 推荐，需要服务器配置支持)
+// createMemoryHistory 带缓存 history 路由
 const router = createRouter({
   history: createWebHistory(),
   routes: constRoutes,
+  // routes: R.concat(constRoutes, dynamicRoutes),
   scrollBehavior(to, from, savedPosition) {
-    // 始终滚动到顶部
-    return { top: 0 };
+    if (savedPosition) {
+      // 通过前进后台时才触发
+      return savedPosition;
+    } else {
+      // 滚动到顶部
+      return { top: 0, behavior: "smooth" };
+    }
   },
 });
 
-// 路由守卫，进行菜单和权限的处理可进行菜单和权限的管理
+// 路由守卫，进行菜单和权限的处理
 router.beforeEach((to, from, next) => {
   if (to.path !== from.path) {
     document.title = `${to.meta.title}`;
@@ -178,6 +193,7 @@ router.beforeEach((to, from, next) => {
   if (to.path === "/login" || to.path === "/register") {
     next();
   } else if (store.getters.routes.length <= 3) {
+    // 防止无限循环，要根据条件停止：通用路由表长度3
     store.dispatch("generateRoutes");
     // @ts-ignore
     next({ ...to, replace: true });
@@ -187,14 +203,16 @@ router.beforeEach((to, from, next) => {
 });
 
 router.onError((error) => {
-  const pattern = /Loading chunk (\d)+ failed/g
-  const isChunkLoadFailed = error.message.match(pattern)
+  const pattern = /Loading chunk (\d)+ failed/g;
+  const isChunkLoadFailed = error.message.match(pattern);
   if (isChunkLoadFailed) {
-    location.reload()
+    location.reload();
   }
-})
+});
 
 // 删除/重置路由
+// getRoutes()：获取一个包含所有路由记录的数组
+// hasRoute()：检查路由是否存在
 export function resetRoute(): void {
   router.getRoutes().forEach((route) => {
     const { name } = route;

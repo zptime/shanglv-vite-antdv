@@ -3,9 +3,9 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: "App",
-  };
+export default {
+  name: "App",
+};
 </script>
 
 <style></style>

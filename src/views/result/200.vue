@@ -1,5 +1,5 @@
 <template>
-  <div>role 角色列表</div>
+  <div>200 成功页</div>
 </template>
 
 <script lang="ts">
