@@ -27,6 +27,7 @@
                 : item.name,
           }"
         >
+          <Icon v-if="item.meta && item.meta.icon" :icon="item.meta.icon" />
           <span>{{ item.meta && item.meta.title }}</span>
         </router-link>
       </a-menu-item>
@@ -37,9 +38,9 @@
 </template>
 
 <script lang="ts">
- import * as R from "ramda";
-import { defineComponent, computed, toRefs, reactive } from "vue";
-import { useRouter } from "vue-router";
+import * as R from "ramda";
+import { defineComponent, computed, ref, toRefs, reactive, watch } from "vue";
+// import { useRouter } from "vue-router";
 import { useStore } from "store/index";
 import SubMenu from "./subMenu.vue";
 
@@ -49,26 +50,21 @@ export default defineComponent({
     const routes = computed(() => store.state.routes.routes);
     const menus = computed(() => store.state.routes.menus);
 
-    // vue-router获取路由，查看路由方法
-    const { options, getRoutes } = useRouter();
-    console.log("getRoutes", getRoutes());
-    console.log("options.routes", options.routes);
-
-    // 通过localStorage保存状态
     const state = reactive({
       selectedKeys: localStorage.getItem("selectedMenu")
         ? [localStorage.getItem("selectedMenu")]
         : [],
       openKeys: localStorage.getItem("openMenu")
-        ? R.split(",", localStorage.getItem("openMenu"))
+        ? R.split(",", localStorage.getItem("openMenu") || "")
         : [],
     });
 
-    const handleMenuClick = (e: Event) => {
-      const { key } = e;
+    const handleMenuClick = ({ key, keyPath }) => {
       // 点击时，将状态保存到vuex和localStorage
       store.commit("SELECTED_MENU", key);
       store.commit("OPEN_MENU", state.openKeys);
+      // 保存选中路径
+      store.commit("SET_BREADCRUMB", keyPath);
     };
 
     return {
