@@ -1,28 +1,30 @@
 {
-  "version": "0.0.0",
+  "name": "shanglv-vite-antdv",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview"
   },
   "dependencies": {
-    "ant-design-vue": "^2.2.0-beta.2",
+    "@ant-design/icons-vue": "^6.0.1",
+    "ant-design-vue": "^2.2.8",
     "ramda": "^0.27.1",
-    "vue": "^3.0.5",
-    "vue-router": "^4.0.8",
-    "vuex": "^4.0.1"
+    "vue": "^3.2.21",
+    "vue-router": "^4.0.12",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@types/node": "^15.12.2",
-    "@types/ramda": "github:types/npm-ramda#dist",
-    "@vitejs/plugin-vue": "^1.2.3",
-    "@vue/compiler-sfc": "^3.0.5",
-    "less": "^4.1.1",
-    "sass": "^1.34.1",
-    "sass-loader": "^12.1.0",
-    "typescript": "^4.3.2",
-    "vite": "^2.3.7",
-    "vite-plugin-imp": "^2.0.7",
-    "vue-tsc": "^0.0.24"
+    "@types/node": "^16.11.6",
+    "@types/ramda": "^0.27.46",
+    "@vitejs/plugin-vue": "^1.9.4",
+    "@vue/compiler-sfc": "^3.2.21",
+    "less": "^4.1.2",
+    "sass": "^1.43.4",
+    "sass-loader": "^12.3.0",
+    "typescript": "^4.4.4",
+    "vite": "^2.6.13",
+    "vite-plugin-imp": "^2.0.10",
+    "vue-tsc": "^0.28.10"
   }
 }

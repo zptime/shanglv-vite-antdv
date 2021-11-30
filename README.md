@@ -10,6 +10,7 @@
 2. [Vite + TS + AntdV 从零开始搭建后台管理系统（二）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/SECOND.md)
 3. [Vite + TS + AntdV 从零开始搭建后台管理系统（三）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/THIRD.md)
 4. [Vite + TS + AntdV 从零开始搭建后台管理系统（四）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/FOURTH.md)
+5. [Vite + TS + AntdV 从零开始搭建后台管理系统（五）](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/FIFTH.md)
 
 ## 代码提交类型
 
@@ -21,3 +22,16 @@
 - test：添加测试、重构测试、不更改生产代码
 - chore：更新构建任务、包管理器配置等；没有生产代码更改
 
+## 发布模式
+
+```bash
+// 安装依赖
+yarn install
+
+// 本地环境运行
+yarn dev
+
+// 生产环境打包+运行
+yarn build
+yarn serve
+```
