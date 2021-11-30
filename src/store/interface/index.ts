@@ -16,6 +16,7 @@ export interface SettingsState {
   isCollapse: boolean;
   selectedMenu: Array<string>;
   openMenu: Array<string>;
+  breadcrumbList: Array<string>;
 }
 
 interface RouteMeta {

@@ -25,6 +25,7 @@
                 : item.name,
           }"
         >
+          <Icon v-if="item.meta && item.meta.icon" :icon="item.meta.icon" />
           <span>{{ item.meta && item.meta.title }}</span>
         </router-link>
       </a-menu-item>
@@ -55,18 +56,19 @@ export default defineComponent({
     // console.log("options.routes", options.routes);
 
     const state = reactive({
-      selectedKeys: localStorage.getItem('selectedMenu') ? [localStorage.getItem('selectedMenu')]: [],
-      openKeys: localStorage.getItem('openMenu') ? R.split(',', localStorage.getItem('openMenu')): [],
+      selectedKeys: localStorage.getItem("selectedMenu")
+        ? [localStorage.getItem("selectedMenu")]
+        : [],
+      openKeys: localStorage.getItem("openMenu")
+        ? R.split(",", localStorage.getItem("openMenu") || "")
+        : [],
     });
 
-
-    const handleMenuClick = (e: Event) => {
-      const { item, key, keyPath } = e;
-      // console.log('click', e);
-      // console.log('handleMenuClick', key, keyPath)
-      // console.log('state', state.selectedKeys, state.openKeys)
-      store.commit('SELECTED_MENU', key);
-      store.commit('OPEN_MENU', state.openKeys);
+    const handleMenuClick = ({ key, keyPath }) => {
+      store.commit("SELECTED_MENU", key);
+      store.commit("OPEN_MENU", state.openKeys);
+      // 保存选中路径
+      store.commit("SET_BREADCRUMB", keyPath);
     };
 
     return {

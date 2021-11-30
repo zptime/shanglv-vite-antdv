@@ -1,5 +1,5 @@
-import { Module } from 'vuex';
-import { SettingsState, RootStateTypes } from '../interface/index';
+import { Module } from "vuex";
+import { SettingsState, RootStateTypes } from "../interface/index";
 
 const settings: Module<SettingsState, RootStateTypes> = {
   state() {
@@ -9,7 +9,8 @@ const settings: Module<SettingsState, RootStateTypes> = {
       isCollapse: false,
       selectedMenu: [],
       openMenu: [],
-    }
+      breadcrumbList: [],
+    };
   },
   getters: {
     logo: (state) => state.logo,
@@ -17,25 +18,31 @@ const settings: Module<SettingsState, RootStateTypes> = {
     isCollapse: (state) => state.isCollapse,
     selectedMenu: (state) => state.selectedMenu,
     openMenu: (state) => state.openMenu,
+    breadcrumbList: (state) => state.breadcrumbList,
   },
   mutations: {
-    TOOGLE_COLLAPSE(state) {
-      state.isCollapse = !state.isCollapse
+    TOGGLE_COLLAPSE(state) {
+      state.isCollapse = !state.isCollapse;
     },
     SELECTED_MENU(state, data) {
-      localStorage.setItem('selectedMenu', data);
+      localStorage.setItem("selectedMenu", data);
       state.selectedMenu = data;
     },
     OPEN_MENU(state, data) {
-      localStorage.setItem('openMenu', data);
+      localStorage.setItem("openMenu", data);
       state.openMenu = data;
-    }
+    },
+    SET_BREADCRUMB(state, data) {
+      localStorage.setItem("breadcrumbList", data);
+      console.log("breadcrumbList", data);
+      state.breadcrumbList = data;
+    },
   },
   actions: {
     toggleCollapse({ commit }) {
-      commit('TOOGLE_COLLAPSE')
+      commit("TOGGLE_COLLAPSE");
     },
-  }
-}
+  },
+};
 
 export default settings;

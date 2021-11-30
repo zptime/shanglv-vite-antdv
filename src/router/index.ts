@@ -148,7 +148,7 @@ export const dynamicRoutes = [
     name: "test",
     component: Layout,
     redirect: "/test/index",
-    meta: { title: "权限测试", icon: "QqOutlined", role: ["admin", "root"] },
+    meta: { title: "权限测试", icon: "AppstoreOutlined", role: ["admin", "root"] },
     children: [
       {
         path: "index",

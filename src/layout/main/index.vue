@@ -1,7 +1,6 @@
 <template>
-  <a-layout-content style="margin: 0 16px">
-    <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
-      Bill is a cat.
+  <a-layout-content class="c-main">
+    <div class="c-main-content">
       <router-view v-slot="{ Component }">
         <keep-alive>
           <component :is="Component" />
@@ -21,5 +20,13 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style lang="scss" scoped>
+.c-main {
+  margin: 20px;
+  &-content {
+    padding: 24px;
+    background: #fff;
+    min-height: 360px;
+  }
+}
 </style>

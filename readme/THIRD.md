@@ -332,13 +332,13 @@ const settings: Module<SettingsState, RootStateTypes> = {
     isCollapse: (state) => state.isCollapse,
   },
   mutations: {
-    TOOGLE_COLLAPSE(state) {
+    TOGGLE_COLLAPSE(state) {
       state.isCollapse = !state.isCollapse;
     },
   },
   actions: {
     toggleCollapse({ commit }) {
-      commit("TOOGLE_COLLAPSE");
+      commit("TOGGLE_COLLAPSE");
     },
   },
 };
@@ -725,7 +725,7 @@ export function setupAntdIcon(app: App<Element>): void {
       const store = useStore();
       const isCollapse = computed(() => store.state.settings.isCollapse);
       const toggleCollapse = () => {
-        store.commit("TOOGLE_COLLAPSE");
+        store.commit("TOGGLE_COLLAPSE");
         // console.log("isCollapse...", isCollapse.value);
       };
 

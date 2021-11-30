@@ -1,18 +1,11 @@
 <template>
-  <a-layout-header style="background: #fff; padding: 0">
+  <a-layout-header class="c-header">
     <Icon
-      icon="MenuUnfoldOutlined"
-      v-if="isCollapse"
-      class="trigger"
+      :icon="isCollapse ? 'MenuUnfoldOutlined' : 'MenuFoldOutlined'"
+      class="c-header-trigger"
       @click="toggleCollapse"
     />
-    <Icon
-      icon="MenuFoldOutlined"
-      v-else
-      class="trigger"
-      @click="toggleCollapse"
-    />
-    <Breadcrumb />
+    <Breadcrumb class="c-header-breadcrumb" />
   </a-layout-header>
 </template>
 
@@ -22,15 +15,15 @@ import { useStore } from "store/index";
 import Breadcrumb from "../header/breadcrumb.vue";
 
 export default defineComponent({
-   components: {
+  components: {
     Breadcrumb,
   },
   setup() {
     const store = useStore();
     const isCollapse = computed(() => store.state.settings.isCollapse);
     const toggleCollapse = () => {
-      store.commit("TOOGLE_COLLAPSE");
-      // console.log("isCollapse...", isCollapse.value);
+      store.commit("TOGGLE_COLLAPSE");
+      console.log("isCollapse...", isCollapse.value);
     };
 
     return {
@@ -42,14 +35,22 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.trigger {
-  font-size: 18px;
-  line-height: 64px;
-  padding: 0 24px;
-  cursor: pointer;
-  transition: color 0.3s;
-  &:hover {
-    color: #1890ff;
+.c-header {
+  background: #fff;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  &-trigger {
+    font-size: 18px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+    &:hover {
+      color: #1890ff;
+    }
+  }
+  &-breadcrumb {
+    flex: 1;
   }
 }
 </style>
