@@ -23,7 +23,6 @@ export const useBreadcrumbStore = defineStore("breadcrumb", {
         menus: MenuRecord[] = [],
         result: BreadcrumbRecord[] = []
       ): BreadcrumbRecord[] => {
-        // debugger;
         const path = this.getBreadcrumb;
         if (menus && menus.length && path && path.length) {
           let node = path.shift();
