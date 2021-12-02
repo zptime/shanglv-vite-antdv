@@ -1,5 +1,5 @@
 <template>
-  <a-breadcrumb style="margin: 16px 0">
+  <a-breadcrumb class="c-breadcrumb">
     <a-breadcrumb-item v-for="item in breadcrumbMenu" :key="item.name">
       <router-link :to="{ name: item.name }">
         {{ item.title }}
@@ -8,41 +8,24 @@
   </a-breadcrumb>
 </template>
 
-<script lang="ts" setup>
-import { computed, ref } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
 import { useStore } from "store/index";
+import { useBreadcrumbStore } from "stores/breadcrumb";
+
+const { filterBreadcrumb } = useBreadcrumbStore();
 
 const store = useStore();
 const menus = computed(() => store.state.routes.menus);
-const breadcrumbList = computed(() => {
-  let list = store.state.settings.breadcrumbList;
-  console.log("list", list);
-  // if (!list?.length) {
-  //   list = (localStorage.getItem("breadcrumbList") || "").split(",");
-  // }
-  return list;
+const breadcrumbMenu = computed(() => {
+  let result = filterBreadcrumb(menus.value);
+  // console.log("breadcrumbMenu...", result);
+  return result;
 });
-
-console.log(menus.value);
-console.log("breadcrumbList", breadcrumbList.value);
-
-const filterBreadcrumb = (menus, path, result = []) => {
-  if (!(menus?.length && path?.length)) return [];
-  let node = path.shift();
-  if (node) {
-    let item = menus.find((o) => o.name === node);
-    result.push({ name: item.name, title: item.meta.title });
-    if (item?.children) {
-      return filterBreadcrumb(item.children, path, result);
-    }
-    return result;
-  }
-};
-
-let breadcrumbMenu = ref([]);
-breadcrumbMenu = filterBreadcrumb(menus.value, breadcrumbList.value);
-
-console.log(breadcrumbMenu);
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.c-breadcrumb {
+  border: 1px solid red;
+}
+</style>

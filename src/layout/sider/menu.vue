@@ -39,15 +39,14 @@
 
 <script lang="ts">
 import * as R from "ramda";
-import { defineComponent, computed, ref, toRefs, reactive, watch } from "vue";
-// import { useRouter } from "vue-router";
+import { defineComponent, computed, toRefs, reactive } from "vue";
 import { useStore } from "store/index";
 import SubMenu from "./subMenu.vue";
+import { useBreadcrumbStore } from "stores/breadcrumb";
 
 export default defineComponent({
   setup() {
     const store = useStore();
-    const routes = computed(() => store.state.routes.routes);
     const menus = computed(() => store.state.routes.menus);
 
     const state = reactive({
@@ -58,17 +57,18 @@ export default defineComponent({
         ? R.split(",", localStorage.getItem("openMenu") || "")
         : [],
     });
+    const { setBreadcrumb } = useBreadcrumbStore();
 
-    const handleMenuClick = ({ key, keyPath }) => {
+    const handleMenuClick = ({ key = "", keyPath = [] }) => {
       // 点击时，将状态保存到vuex和localStorage
       store.commit("SELECTED_MENU", key);
       store.commit("OPEN_MENU", state.openKeys);
       // 保存选中路径
-      store.commit("SET_BREADCRUMB", keyPath);
+      // store.commit("SET_BREADCRUMB", keyPath);
+      setBreadcrumb(keyPath);
     };
 
     return {
-      routes,
       menus,
 
       ...toRefs(state),

@@ -97,7 +97,7 @@ export const dynamicRoutes = [
     name: "result",
     component: Layout,
     redirect: "/result/200",
-    meta: { title: "结果页", icon: "SettingOutlined", role: ["admin"] },
+    meta: { title: "结果管理", icon: "SettingOutlined", role: ["admin"] },
     children: [
       {
         id: "R030",
