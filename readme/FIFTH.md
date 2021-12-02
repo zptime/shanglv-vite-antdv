@@ -2,7 +2,7 @@
 
 ## 前言
 
-[尤大的最新推荐(https://twitter.com/VueDose/status/1463169464451706897)]如下所示：
+[尤大的最新推荐](https://twitter.com/VueDose/status/1463169464451706897)如下所示：
 
 ![预览效果](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/ic_5_1.png)
 
@@ -69,14 +69,14 @@ export const useExampleStore = defineStore("example", {
 });
 ```
 
-## 5.1 完善 breadcrumb 面包屑组件
+## 完善 breadcrumb 面包屑组件
 
-> 完善 header 头部区的面包屑功能
+> 完善 header 头部区的面包屑功能，使用了Pinia和script setup完成
 
 实现方案思路
 
 1. 选中左侧菜单时，全局保存菜单路径(breadcrumbList)；
-2. 根据保存路径，在左侧菜单表中筛选出对应路由信息(breadcrumbRoutes)；
+2. 根据保存路径，在左侧菜单表中筛选出对应路由信息(breadcrumbMenu)；
 3. 根据对应路由信息，展示面包屑，其中要注意 home 页的处理
 
 ### 位置调整
@@ -131,32 +131,95 @@ export const useExampleStore = defineStore("example", {
 </script>
 ```
 
-### 数据保存
+### 数据处理
 
-1. 新建 `stores/breadcrumb.ts` 文件，对面包屑进行处理
+1. 菜单、路由等接口定义
+
+```js
+// src/interface/route.ts
+import { defineComponent } from "vue";
+
+type Component<T extends any = any> =
+  | ReturnType<typeof defineComponent>
+  | (() => Promise<typeof import("*.vue")>)
+  | (() => Promise<T>);
+
+export interface RouteMeta {
+  title: string; // 标题
+  hidden: boolean; // 是否隐藏
+  icon: string; // 图标
+  isKeepAlive?: boolean; // 是否开启keep-alive
+  orderId?: string | number; // 序号
+}
+
+export interface RouteRecord {
+  id?: string;
+  name?: string;
+  meta?: RouteMeta;
+  children?: RouteRecord[];
+  orderId?: number;
+  path?: string;
+  component?: Component | string;
+  redirect?: string;
+}
+
+
+// src/interface/menu.ts
+import { RouteRecord } from "./route";
+export interface MenuRecord extends RouteRecord {}
+```
+
+2. 新建 `stores/breadcrumb.ts` 文件，对面包屑进行处理
 
 ```js
 import { defineStore } from "pinia";
+import { MenuRecord } from "interface/menu";
+
+export interface BreadcrumbRecord {
+  name: string;
+  title: string;
+}
+
+const initBreadcrumbList = [{ name: "dashboard", title: "首页" }];
+const initBreadcrumb = initBreadcrumbList.map((o) => o.name);
 
 export const useBreadcrumbStore = defineStore("breadcrumb", {
   state: () => ({
-    breadcrumbList: ["dashboard"],
+    breadcrumbList: initBreadcrumb,
   }),
   getters: {
     getBreadcrumb(state) {
       return state.breadcrumbList;
     },
+    filterBreadcrumb() {
+      return (
+        menus: MenuRecord[] = [],
+        result: BreadcrumbRecord[] = []
+      ): BreadcrumbRecord[] => {
+        const path = this.getBreadcrumb;
+        if (menus && menus.length && path && path.length) {
+          let node = path.shift();
+          let item = menus.find((o) => o.name === node);
+          result.push({ name: item.name, title: item.meta.title });
+          if (item?.children) {
+            return this.filterBreadcrumb(item.children, result);
+          }
+        }
+        return result && result.length ? result : initBreadcrumbList;
+      };
+    },
   },
   actions: {
     setBreadcrumb(data: string[]) {
-      console.log("pinia", data);
       this.breadcrumbList = data;
     },
   },
 });
 ```
 
-2. 在 layout/sider/menu.vue 中保存选中的菜单路径
+### 数据保存
+
+在 layout/sider/menu.vue 中保存选中的菜单路径
 
 ```html
 <template>
@@ -181,9 +244,37 @@ export const useBreadcrumbStore = defineStore("breadcrumb", {
 主要在 `layout/header/breadcrumb.vue` 中处理，之前更新了 vue 版本，现在可以使用 setup 来写了，具体使用可查看官网-[SFC <script setup> 官网介绍 中文](https://v3.cn.vuejs.org/api/sfc-script-setup.html)
 
 ```vue
+<template>
+  <a-breadcrumb class="c-breadcrumb">
+    <a-breadcrumb-item v-for="item in breadcrumbMenu" :key="item.name">
+      <router-link :to="{ name: item.name }">
+        {{ item.title }}
+      </router-link>
+    </a-breadcrumb-item>
+  </a-breadcrumb>
+</template>
 
+<script setup lang="ts">
+import { computed } from "vue";
+import { useStore } from "store/index";
+import { useBreadcrumbStore } from "stores/breadcrumb";
+
+const { filterBreadcrumb } = useBreadcrumbStore();
+
+const store = useStore();
+const menus = computed(() => store.state.routes.menus);
+const breadcrumbMenu = computed(() => {
+  let result = filterBreadcrumb(menus.value);
+  return result;
+});
+</script>
+
+<style lang="scss" scoped>
+.c-breadcrumb {
+}
+</style>
 ```
 
-## 5.3 新增 tagsView 导航标签组件
+### 效果展示
 
-## 5.4 新增 user 用户信息组件
+![预览效果](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/ic_5_2.png)

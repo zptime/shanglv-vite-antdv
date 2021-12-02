@@ -40,7 +40,7 @@ export const useBreadcrumbStore = defineStore("breadcrumb", {
   // 声明actions
   actions: {
     setBreadcrumb(data: string[]) {
-      console.log("pinia", data);
+      console.log("breadcrumbList...", data);
       this.breadcrumbList = data;
     },
   },

@@ -19,13 +19,11 @@ const store = useStore();
 const menus = computed(() => store.state.routes.menus);
 const breadcrumbMenu = computed(() => {
   let result = filterBreadcrumb(menus.value);
-  // console.log("breadcrumbMenu...", result);
+  console.log("breadcrumbMenu...", result);
   return result;
 });
 </script>
 
 <style lang="scss" scoped>
-.c-breadcrumb {
-  border: 1px solid red;
-}
+.c-breadcrumb {}
 </style>
