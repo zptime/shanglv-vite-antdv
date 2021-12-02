@@ -31,6 +31,8 @@ export default defineConfig({
       routes: resolve("src/routes"),
       styles: resolve("src/styles"),
       store: resolve("src/store"),
+      stores: resolve("src/stores"),
+      interface: resolve("src/interface"),
     },
   },
   // css: {

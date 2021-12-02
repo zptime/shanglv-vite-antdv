@@ -9,6 +9,7 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
     "ant-design-vue": "^2.2.8",
+    "pinia": "^2.0.4",
     "ramda": "^0.27.1",
     "vue": "^3.2.21",
     "vue-router": "^4.0.12",

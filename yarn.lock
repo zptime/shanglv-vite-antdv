@@ -385,6 +385,11 @@
   resolved "https://registry.npmjs.org/@vue/devtools-api/-/devtools-api-6.0.0-beta.20.tgz"
   integrity sha512-21u2jFOk8jbAneeGpDwZQ0W66RJa0IBDUyVl6SgKnn2cRFjLWzKj+ukXjpLhYr1KASyCe5E5U4jXwChVo0YUAw==
 
+"@vue/devtools-api@^6.0.0-beta.20.1":
+  version "6.0.0-beta.20.1"
+  resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.0.0-beta.20.1.tgz#5b499647e929c35baf2a66a399578f9aa4601142"
+  integrity sha512-R2rfiRY+kZugzWh9ZyITaovx+jpU4vgivAEAiz80kvh3yviiTU3CBuGuyWpSwGz9/C7TkSWVM/FtQRGlZ16n8Q==
+
 "@vue/reactivity@3.2.21", "@vue/reactivity@^3.2.20":
   version "3.2.21"
   resolved "https://registry.npmjs.org/@vue/reactivity/-/reactivity-3.2.21.tgz"
@@ -1244,6 +1249,14 @@ pify@^4.0.1:
   resolved "https://registry.npmjs.org/pify/-/pify-4.0.1.tgz"
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
 
+pinia@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.0.4.tgz#06f6a03f6f19e6ec8b63cc06459011d96948e53d"
+  integrity sha512-nAc2f9HmOcBbWRlnGDuBGedM1G6uFAR10FnJWP1/dgm1I2tM5jbgKL/3IgynP4mBnPCy//ky7g0WpCZl5Mmxsg==
+  dependencies:
+    "@vue/devtools-api" "^6.0.0-beta.20.1"
+    vue-demi "*"
+
 postcss@^8.1.10, postcss@^8.3.8:
   version "8.3.11"
   resolved "https://registry.npmjs.org/postcss/-/postcss-8.3.11.tgz"
@@ -1697,6 +1710,11 @@ vscode-vue-languageservice@0.28.10:
     vscode-languageserver-textdocument "^1.0.1"
     vscode-pug-languageservice "0.28.10"
     vscode-typescript-languageservice "0.28.10"
+
+vue-demi@*:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.1.tgz#f7e18efbecffd11ab069d1472d7a06e319b4174c"
+  integrity sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw==
 
 vue-router@^4.0.12:
   version "4.0.12"
