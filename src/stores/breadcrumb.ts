@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import { MenuRecord } from "interface/menu";
+import { useMenuStore } from "stores/menus";
 
-export interface BreadcrumbRecord {
+interface BreadcrumbRecord {
   name: string;
   title: string;
 }
@@ -9,7 +10,6 @@ const initBreadcrumbList = [{ name: "dashboard", title: "首页" }];
 const initBreadcrumb = initBreadcrumbList.map((o) => o.name);
 
 export const useBreadcrumbStore = defineStore("breadcrumb", {
-  // 声明state
   state: () => ({
     breadcrumbList: initBreadcrumb,
   }),
@@ -26,10 +26,10 @@ export const useBreadcrumbStore = defineStore("breadcrumb", {
         const path = this.getBreadcrumb;
         if (menus && menus.length && path && path.length) {
           let node = path.shift();
-          let item = menus.find((o) => o.name === node);
-          result.push({ name: item.name, title: item.meta.title });
-          if (item?.children) {
-            return this.filterBreadcrumb(item.children, result);
+          let item = menus.find((o) => o.key === node) as MenuRecord;
+          result.push({ name: item.key, title: item.title });
+          if (item?.child) {
+            return this.filterBreadcrumb(item.child, result);
           }
         }
         return result && result.length ? result : initBreadcrumbList;
@@ -39,8 +39,13 @@ export const useBreadcrumbStore = defineStore("breadcrumb", {
   // 声明actions
   actions: {
     setBreadcrumb(data: string[]) {
-      console.log("breadcrumbList...", data);
+      // console.log("breadcrumbList...", data);
+      // localStorage.setItem("breadcrumbList", data);
       this.breadcrumbList = data;
+    },
+    generateBreadcrumb() {
+      const { menus } = useMenuStore();
+      this.filterBreadcrumb(menus, []);
     },
   },
 });

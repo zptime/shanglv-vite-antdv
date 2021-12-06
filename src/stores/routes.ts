@@ -1,7 +1,5 @@
-import * as R from "ramda";
 import { defineStore } from "pinia";
-import { RouteRecordRaw } from "vue-router";
-import router, { constRoutes, dynamicRoutes, resetRoute } from "src/router";
+import router, { constRoutes, dynamicRoutes, resetRoute } from "router";
 import { useMenuStore } from "./menus";
 
 export const useRouteStore = defineStore("route", {
@@ -20,16 +18,13 @@ export const useRouteStore = defineStore("route", {
         const { generateMenus } = useMenuStore();
 
         resetRoute();
-        R.forEach((route) => {
+        routes.forEach((route) => {
           router.addRoute(route);
-        }, routes);
-        this.setRoutes(routes);
+        });
+        this.routes = routes;
         generateMenus(routes);
         resolve(routes);
       });
-    },
-    setRoutes(routes: RouteRecordRaw[] = []) {
-      this.routes = routes;
     },
   },
 });

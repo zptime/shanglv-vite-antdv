@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import type { App } from "vue";
-import store from "store/index";
+import { useRouteStore } from "stores/routes";
 import { constRoutes } from "./constantRoutes";
 import { dynamicRoutes } from "./dynamicRoutes";
 export { constRoutes, dynamicRoutes };
@@ -25,12 +25,15 @@ router.beforeEach((to, from, next) => {
 
   if (to.path === "/login" || to.path === "/register") {
     next();
-  } else if (store.getters.routes.length <= 3) {
-    // 防止无限循环，要根据条件停止：通用路由表长度3
-    store.dispatch("generateRoutes");
-    next({ ...to, replace: true });
   } else {
-    next();
+    const { generateRoutes, routes } = useRouteStore();
+    if (routes.length <= 3) {
+      // 防止无限循环，要根据条件停止：通用路由表长度3
+      generateRoutes();
+      next({ ...to, replace: true });
+    } else {
+      next();
+    }
   }
 });
 

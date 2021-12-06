@@ -1,4 +1,5 @@
 <template>
+  <div>JSON.stringify(menuList)</div>
   <a-menu
     mode="inline"
     theme="dark"
@@ -10,78 +11,50 @@
       <!-- 一级菜单 -->
       <a-menu-item
         v-if="
-          !item.children ||
-          (item.children && item.children.length && item.children.length === 1)
+          !item.child ||
+          (item.child && item.child.length && item.child.length === 1)
         "
-        :key="item.name"
+        :key="item.key"
       >
-        <!-- 注意：此处to属性中用的是name值，而不是path；如果用path,
-        router/index.ts中的子菜单path应该定义为“/父菜单路由/子菜单路由”，例如：将“role”改为“/system/role”。 -->
         <router-link
           :to="{
-            name:
-              item.children &&
-              item.children.length &&
-              item.children.length === 1
-                ? item.children[0].name
-                : item.name,
+            key:
+              item.child && item.child.length && item.child.length === 1
+                ? item.child[0].key
+                : item.key,
           }"
         >
-          <Icon v-if="item.meta && item.meta.icon" :icon="item.meta.icon" />
-          <span>{{ item.meta && item.meta.title }}</span>
+          <Icon v-if="item.icon" :icon="item.icon" />
+          <span>{{ item.title }}</span>
         </router-link>
       </a-menu-item>
       <!-- 子级菜单 -->
-      <SubMenu v-else :menu-info="item" :key="item.name" />
+      <SubMenu v-else :menu-info="item" />
     </template>
   </a-menu>
 </template>
 
-<!-- <script setup lang="ts">
+<script setup lang="ts">
+import { ref } from "vue";
 import SubMenu from "./subMenu.vue";
-
-</script> -->
-
-<script lang="ts">
-import * as R from "ramda";
-import { defineComponent, computed, toRefs, reactive } from "vue";
-import { useStore } from "store/index";
-import SubMenu from "./subMenu.vue";
+import { storeToRefs } from "pinia";
+import { useMenuStore } from "stores/menus";
 import { useBreadcrumbStore } from "stores/breadcrumb";
 
-export default defineComponent({
-  setup() {
-    const store = useStore();
-    const menus = computed(() => store.state.routes.menus);
+const { setBreadcrumb } = useBreadcrumbStore();
+const { menus } = storeToRefs(useMenuStore());
+const { setSelectedMenu, setOpenMenu } = useMenuStore();
 
-    const state = reactive({
-      selectedKeys: localStorage.getItem("selectedMenu")
-        ? [localStorage.getItem("selectedMenu")]
-        : [],
-      openKeys: localStorage.getItem("openMenu")
-        ? R.split(",", localStorage.getItem("openMenu") || "")
-        : [],
-    });
-    const { setBreadcrumb } = useBreadcrumbStore();
+let selectedKeys = ref<string[]>([]);
+let openKeys = ref<string[]>([]);
 
-    const handleMenuClick = ({ key = "", keyPath = [] }) => {
-      // 点击时，将状态保存到vuex和localStorage
-      store.commit("SELECTED_MENU", key);
-      store.commit("OPEN_MENU", state.openKeys);
-      // 保存选中路径
-      // store.commit("SET_BREADCRUMB", keyPath);
-      setBreadcrumb(keyPath);
-    };
+const handleMenuClick = ({ key = "", keyPath = [] }) => {
+  console.log("handleMenuClick", key, keyPath, openKeys);
+  // 选中菜单数据保存
+  setSelectedMenu(key);
+  setOpenMenu(openKeys.value);
 
-    return {
-      menus,
-
-      ...toRefs(state),
-      handleMenuClick,
-    };
-  },
-  components: {
-    SubMenu,
-  },
-});
+  // 保存选中路径
+  setBreadcrumb(keyPath);
+};
 </script>

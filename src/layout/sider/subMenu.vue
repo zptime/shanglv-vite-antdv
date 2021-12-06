@@ -1,42 +1,42 @@
 <template>
-  <a-sub-menu :key="menuInfo.name">
+  <a-sub-menu :key="menuInfo.key">
     <template #title>
       <span>
         <Icon
-          v-if="menuInfo.meta && menuInfo.meta.icon"
-          :icon="menuInfo.meta.icon"
+          v-if="menuInfo.icon"
+          :icon="menuInfo.icon"
         />
-        <span>{{ menuInfo.meta && menuInfo.meta.title }}</span>
+        <span>{{ menuInfo.title }}</span>
       </span>
     </template>
-    <template v-if="menuInfo.children && menuInfo.children.length">
-      <template v-for="item in menuInfo.children">
+    <template v-if="menuInfo.child && menuInfo.child.length">
+      <template v-for="item in menuInfo.child">
         <!-- 不存在子级的菜单 -->
         <a-menu-item
           v-if="
-            !item.children ||
-            (item.children &&
-              item.children.length &&
-              item.children.length === 1)
+            !item.child ||
+            (item.child &&
+              item.child.length &&
+              item.child.length === 1)
           "
-          :key="item.name"
+          :key="item.key"
         >
           <router-link
             :to="{
-              name:
-                item.children &&
-                item.children.length &&
-                item.children.length === 1
-                  ? item.children[0].name
-                  : item.name,
+              key:
+                item.child &&
+                item.child.length &&
+                item.child.length === 1
+                  ? item.child[0].key
+                  : item.key,
             }"
           >
-            <Icon v-if="item.meta && item.meta.icon" :icon="item.meta.icon" />
-            <span>{{ item.meta && item.meta.title }}</span>
+            <Icon v-if="item.icon" :icon="item.icon" />
+            <span>{{ item.title }}</span>
           </router-link>
         </a-menu-item>
         <!-- 存在子级菜单 -->
-        <SubMenu v-else :menu-info="item" :key="item.path" />
+        <SubMenu v-else :menu-info="item" />
       </template>
     </template>
   </a-sub-menu>
@@ -46,7 +46,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "SubMenu",
+  key: "SubMenu",
   props: {
     menuInfo: {
       type: Object,

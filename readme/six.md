@@ -42,7 +42,7 @@ export default {
 };
 ```
 
-### 国家化实现
+### 国际化实现
 
 Ant Design Vue 默认文案是英文，需要改成中文，使用`ConfigProvider`来完成
 
@@ -74,3 +74,4 @@ export default {
 ```
 
 ## 侧栏菜单(menu)重构
+
