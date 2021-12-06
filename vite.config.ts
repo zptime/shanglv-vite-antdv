@@ -23,7 +23,7 @@ export default defineConfig({
       apis: resolve("src/apis"),
       views: resolve("src/views"),
       utils: resolve("src/utils"),
-      routes: resolve("src/routes"),
+      router: resolve("src/router"),
       styles: resolve("src/styles"),
       store: resolve("src/store"),
       stores: resolve("src/stores"),

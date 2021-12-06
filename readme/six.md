@@ -1,7 +1,7 @@
 # Vite + TS + AntdV 搭建后台管理系统（六）
 
-1. Ant Design Vue 3.x 出来了，升级组件库
-2. 使用 Pinia 处理菜单数据
+1. Ant Design Vue 3.x 出来了，升级组件库；vite 中实现按需引入
+2. 使用 Pinia 处理侧栏菜单(menu)数据，进行重构
 3. 菜单数据(menu)和面包屑数据(breadcrumb)的联动处理
 
 ## Ant Design Vue 组件库升级
@@ -72,3 +72,5 @@ export default {
 
 <style></style>
 ```
+
+## 侧栏菜单(menu)重构

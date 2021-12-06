@@ -15,7 +15,7 @@
       "comps/*": ["src/components/*"],
       "apis/*": ["src/apis/*"],
       "views/*": ["src/utils/*"],
-      "routes/*": ["src/routes/*"],
+      "router/*": ["src/router/*"],
       "styles/*": ["src/styles/*"],
       "store/*": ["src/store/*"],
       "stores/*": ["src/stores/*"],

@@ -2,7 +2,9 @@ import * as R from "ramda";
 import { Module } from "vuex";
 import type { RouteRecordRaw } from "vue-router";
 import { RoutesState, RootStateTypes } from "../interface/index";
-import router, { constRoutes, dynamicRoutes, resetRoute } from "../../router";
+import router, { resetRoute } from "../../router";
+import { constRoutes } from "../../router/constantRoutes";
+import { dynamicRoutes } from "../../router/dynamicRoutes";
 
 const routes: Module<RoutesState, RootStateTypes> = {
   state() {

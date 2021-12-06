@@ -15,6 +15,7 @@ declare module 'vue' {
     ALayoutSider: typeof import('ant-design-vue/es')['LayoutSider']
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
+    AMenuItemGroup: typeof import('ant-design-vue/es')['MenuItemGroup']
     ARadio: typeof import('ant-design-vue/es')['Radio']
     ASubMenu: typeof import('ant-design-vue/es')['SubMenu']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
