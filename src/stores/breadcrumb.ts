@@ -45,7 +45,7 @@ export const useBreadcrumbStore = defineStore("breadcrumb", {
     },
     generateBreadcrumb() {
       const { menus } = useMenuStore();
-      this.filterBreadcrumb(menus, []);
+      return this.filterBreadcrumb(menus, []);
     },
   },
 });
