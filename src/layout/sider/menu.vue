@@ -18,7 +18,7 @@
       >
         <router-link
           :to="{
-            key:
+            name:
               item.child && item.child.length && item.child.length === 1
                 ? item.child[0].key
                 : item.key,
@@ -44,6 +44,7 @@ import { useBreadcrumbStore } from "stores/breadcrumb";
 const { setBreadcrumb } = useBreadcrumbStore();
 const { menus } = storeToRefs(useMenuStore());
 const { setSelectedMenu, setOpenMenu } = useMenuStore();
+console.log(menus.value);
 
 let selectedKeys = ref<string[]>([]);
 let openKeys = ref<string[]>([]);

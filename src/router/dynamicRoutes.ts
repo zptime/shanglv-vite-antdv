@@ -8,19 +8,19 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     path: "/system",
     name: "system",
     component: Layout,
-    meta: { title: "系统管理", icon: "DesktopOutlined", role: ["admin"] },
+    meta: { title: "系统管理", icon: "DesktopOutlined" },
     children: [
       {
         path: "user",
         name: "user",
-        meta: { title: "用户列表", icon: "AppstoreOutlined", role: ["admin"] },
-        component: () => import("views/system/user/index.vue"),
+        meta: { title: "用户管理", icon: "AppstoreOutlined" },
+        redirect: "/",
         children: [
           {
-            path: "add",
-            name: "userAdd",
-            meta: { title: "新增用户", role: ["admin"] },
-            component: { template: "<div>新增用户</div>" },
+            path: "/",
+            name: "userList",
+            meta: { title: "用户列表" },
+            component: () => import("views/system/user/index.vue"),
           },
           {
             path: "edit",
@@ -29,24 +29,24 @@ export const dynamicRoutes: RouteRecordRaw[] = [
             component: { template: "<div>编辑用户</div>" },
           },
           {
-            path: "edit",
-            name: "userHidden",
-            meta: { title: "隐藏页", role: ["admin"], hidden: true },
-            component: { template: "<div>隐藏页</div>" },
+            path: "detail",
+            name: "userDetail",
+            meta: { title: "详情页", role: ["admin"], hidden: true },
+            component: { template: "<div>用户详情</div>" },
           },
         ],
       },
       {
         path: "role",
         name: "role",
-        meta: { title: "角色列表", icon: "InboxOutlined", role: ["admin"] },
+        meta: { title: "角色管理", icon: "InboxOutlined", role: ["admin"] },
         component: () => import("views/system/role/index.vue"),
       },
       {
-        path: "permission",
-        name: "permission",
-        meta: { title: "权限列表", icon: "MailOutlined", role: ["admin"] },
-        component: () => import("views/system/permission/index.vue"),
+        path: "menu",
+        name: "menu",
+        meta: { title: "菜单管理", icon: "MailOutlined", role: ["admin"] },
+        component: () => import("views/system/menu/index.vue"),
       },
     ],
   },
@@ -55,7 +55,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     name: "result",
     component: Layout,
     redirect: "/result/200",
-    meta: { title: "结果管理", icon: "SettingOutlined", role: ["admin"] },
+    meta: { title: "结果管理", icon: "SettingOutlined", hidden: false },
     children: [
       {
         path: "200",
@@ -83,7 +83,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     path: "/components",
     component: Layout,
     name: "components",
-    meta: { title: "组件库", icon: "QqOutlined", role: ["admin", "root"] },
+    meta: { title: "组件库", icon: "SettingOutlined", role: ["admin", "root"] },
     children: [
       {
         path: "table",
@@ -104,11 +104,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     name: "test",
     component: Layout,
     redirect: "/test/index",
-    meta: {
-      title: "权限测试",
-      icon: "AppstoreOutlined",
-      role: ["admin", "root"],
-    },
+    meta: { title: "测试管理", icon: "AppstoreOutlined" },
     children: [
       {
         path: "index",

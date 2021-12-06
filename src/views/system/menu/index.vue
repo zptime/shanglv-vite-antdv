@@ -1,5 +1,5 @@
 <template>
-  <div>permission 权限列表</div>
+  <div>menu 菜单管理</div>
 </template>
 
 <script>

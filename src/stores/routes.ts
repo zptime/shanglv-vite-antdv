@@ -7,9 +7,9 @@ export const useRouteStore = defineStore("route", {
     routes: constRoutes,
   }),
   getters: {
-    getRoutes(state) {
-      return state.routes;
-    },
+    // getRoutes(state) {
+    //   return state.routes;
+    // },
   },
   actions: {
     generateRoutes() {

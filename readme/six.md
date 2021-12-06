@@ -1,8 +1,10 @@
 # Vite + TS + AntdV 搭建后台管理系统（六）
 
 1. Ant Design Vue 3.x 出来了，升级组件库；vite 中实现按需引入
-2. 使用 Pinia 处理侧栏菜单(menu)数据，进行重构
-3. 菜单数据(menu)和面包屑数据(breadcrumb)的联动处理
+2. 使用 Pinia 重构路由
+3. 使用 Pinia 重构侧栏菜单(menu)
+4. 使用 Pinia 重构面包屑(breadcrumb)
+5. 菜单数据(menu)和面包屑数据(breadcrumb)的联动处理
 
 ## Ant Design Vue 组件库升级
 
@@ -73,5 +75,98 @@ export default {
 <style></style>
 ```
 
+## 路由数据(route)重构
+
+### 路由元 meta 字段扩充
+
+[官网介绍之路由元信息](https://next.router.vuejs.org/zh/guide/advanced/meta.html)
+
+可以在路由的 meta 中自定义权限或者配置信息，需要扩展 RouteMeta 接口来扩展 meta 属性，在 TS 环境中需要进行声明，具体可查看[官网介绍之路由元信息](https://next.router.vuejs.org/zh/guide/advanced/meta.html)
+
+```js
+// 新建typings.d.ts文件
+import "vue-router";
+
+declare module "vue-router" {
+  interface RouteMeta {
+    title?: string; // 标题
+    hidden?: boolean; // 是否隐藏
+    icon?: string; // 图标
+    isKeepAlive?: boolean; // 是否开启keep-alive
+    orderId?: string | number; // 序号
+    role?: string[]; // 角色
+  }
+}
+```
+
+### 路由文件更改(router/index.ts)
+
+```js
+// 修改router/index.ts文件
+
+// todo...
+// 初始化路由及菜单函数
+import { useRouteStore } from "stores/routes";
+// 通用路由表
+import { constRoutes } from "./constantRoutes";
+// 动态路由表
+import { dynamicRoutes } from "./dynamicRoutes";
+export { constRoutes, dynamicRoutes };
+
+// 路由守卫：进行菜单和权限的处理
+router.beforeEach((to, from, next) => {
+  if (to.path === "/login" || to.path === "/register") {
+    next();
+  } else {
+    // 初始化路由及菜单函数
+    const { generateRoutes, routes } = useRouteStore();
+    if (routes.length <= 3) {
+      // 防止无限循环，要根据条件停止：通用路由表长度3
+      generateRoutes();
+      next({ ...to, replace: true });
+    } else {
+      next();
+    }
+  }
+});
+
+export default router;
+```
+
+### Pinia 处理路由
+
+```js
+// 新建stores/routes.ts文件
+import { defineStore } from "pinia";
+import router, { constRoutes, dynamicRoutes, resetRoute } from "router";
+import { useMenuStore } from "./menus";
+
+export const useRouteStore = defineStore("route", {
+  state: () => ({
+    routes: constRoutes,
+  }),
+  getters: {},
+  actions: {
+    generateRoutes() {
+      return new Promise((resolve) => {
+        const routes = [...constRoutes, ...dynamicRoutes];
+        resetRoute();
+        routes.forEach((route) => {
+          router.addRoute(route);
+        });
+        this.routes = routes;
+
+        // todo...
+        // 菜单初始化处理
+        const { generateMenus } = useMenuStore();
+        generateMenus(routes);
+        resolve(routes);
+      });
+    },
+  },
+});
+```
+
 ## 侧栏菜单(menu)重构
+
 

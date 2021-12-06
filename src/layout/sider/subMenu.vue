@@ -2,10 +2,7 @@
   <a-sub-menu :key="menuInfo.key">
     <template #title>
       <span>
-        <Icon
-          v-if="menuInfo.icon"
-          :icon="menuInfo.icon"
-        />
+        <Icon v-if="menuInfo.icon" :icon="menuInfo.icon" />
         <span>{{ menuInfo.title }}</span>
       </span>
     </template>
@@ -15,18 +12,14 @@
         <a-menu-item
           v-if="
             !item.child ||
-            (item.child &&
-              item.child.length &&
-              item.child.length === 1)
+            (item.child && item.child.length && item.child.length === 1)
           "
           :key="item.key"
         >
           <router-link
             :to="{
-              key:
-                item.child &&
-                item.child.length &&
-                item.child.length === 1
+              name:
+                item.child && item.child.length && item.child.length === 1
                   ? item.child[0].key
                   : item.key,
             }"
@@ -46,7 +39,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  key: "SubMenu",
+  name: "SubMenu",
   props: {
     menuInfo: {
       type: Object,
