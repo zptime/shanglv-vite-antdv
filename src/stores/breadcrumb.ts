@@ -26,8 +26,8 @@ export const useBreadcrumbStore = defineStore("breadcrumb", {
         const path = this.getBreadcrumb;
         if (menus && menus.length && path && path.length) {
           let node = path.shift();
-          let item = menus.find((o) => o.key === node) as MenuRecord;
-          result.push({ name: item.key, title: item.title });
+          let item = menus.find((o) => o.name === node) as MenuRecord;
+          result.push({ name: item.name, title: item.title });
           if (item?.child) {
             return this.filterBreadcrumb(item.child, result);
           }

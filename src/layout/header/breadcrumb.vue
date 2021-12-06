@@ -14,7 +14,7 @@ import { useBreadcrumbStore } from "stores/breadcrumb";
 const { generateBreadcrumb } = useBreadcrumbStore();
 const breadcrumbMenu = computed(() => {
   let result = generateBreadcrumb();
-  console.log("breadcrumbMenu", result);
+  // console.log("breadcrumbMenu", result);
   return result;
 });
 </script>

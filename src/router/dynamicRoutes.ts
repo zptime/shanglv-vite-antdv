@@ -14,10 +14,10 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         path: "user",
         name: "user",
         meta: { title: "用户管理", icon: "AppstoreOutlined" },
-        redirect: "/",
+        redirect: "/index",
         children: [
           {
-            path: "/",
+            path: "index",
             name: "userList",
             meta: { title: "用户列表" },
             component: () => import("views/system/user/index.vue"),

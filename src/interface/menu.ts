@@ -3,7 +3,7 @@
 
 // 菜单
 export interface MenuRecord {
-  key: string;
+  name: string;
   title: string;
   icon: string;
   child?: MenuRecord[];
