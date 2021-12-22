@@ -1,22 +1,27 @@
 <template>
   <a-layout-header class="c-header">
-    <Icon
-      :icon="isCollapse ? 'MenuUnfoldOutlined' : 'MenuFoldOutlined'"
-      class="c-header-trigger"
-      @click="toggleCollapse"
-    />
-    <Breadcrumb class="c-header-breadcrumb" />
+    <div class="c-header-top">
+      <Icon
+        :icon="isCollapse ? 'MenuUnfoldOutlined' : 'MenuFoldOutlined'"
+        class="c-header-trigger"
+        @click="toggleCollapse"
+      />
+      <hl-breadcrumb class="c-header-breadcrumb" />
+    </div>
+    <hl-tabs />
   </a-layout-header>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore } from "store/index";
-import Breadcrumb from "../header/breadcrumb.vue";
+import HlBreadcrumb from "./breadcrumb.vue";
+import HlTabs from "./tabs.vue";
 
 export default defineComponent({
   components: {
-    Breadcrumb,
+    HlBreadcrumb,
+    HlTabs,
   },
   setup() {
     const store = useStore();
@@ -38,8 +43,13 @@ export default defineComponent({
 .c-header {
   background: #fff;
   padding: 0;
-  display: flex;
-  align-items: center;
+  height: auto;
+  line-height: 1;
+  &-top {
+    display: flex;
+    align-items: center;
+    height: 56px;
+  }
   &-trigger {
     font-size: 18px;
     padding: 0 24px;
