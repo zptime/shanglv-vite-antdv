@@ -344,3 +344,87 @@ export default defineComponent({
 
 <style scoped></style>
 ```
+
+## 4. 面包屑(breadcrumb)重构
+
+### Pinia 管理面包屑
+
+stores/breadcrumb.ts 文件
+
+```js
+import { defineStore } from "pinia";
+import { MenuRecord } from "interface/menu";
+import { useMenuStore } from "stores/menus";
+
+interface BreadcrumbRecord {
+  name: string;
+  title: string;
+}
+const initBreadcrumbList = [{ name: "dashboard", title: "首页" }];
+const initBreadcrumb = initBreadcrumbList.map((o) => o.name);
+
+export const useBreadcrumbStore = defineStore("breadcrumb", {
+  state: () => ({
+    breadcrumbList: initBreadcrumb,
+  }),
+  getters: {
+    getBreadcrumb(state) {
+      return state.breadcrumbList;
+    },
+    filterBreadcrumb() {
+      // 从菜单中过滤出面包屑值
+      return (
+        menus: MenuRecord[] = [],
+        result: BreadcrumbRecord[] = []
+      ): BreadcrumbRecord[] => {
+        const path = this.getBreadcrumb;
+        if (menus && menus.length && path && path.length) {
+          let node = path.shift();
+          let item = menus.find((o) => o.name === node) as MenuRecord;
+          result.push({ name: item.name, title: item.title });
+          if (item?.child) {
+            return this.filterBreadcrumb(item.child, result);
+          }
+        }
+        return result && result.length ? result : initBreadcrumbList;
+      };
+    },
+  },
+  actions: {
+    setBreadcrumb(data: string[]) {
+      this.breadcrumbList = data;
+    },
+    generateBreadcrumb() {
+      const { menus } = useMenuStore();
+      return this.filterBreadcrumb(menus, []);
+    },
+  },
+});
+
+```
+
+### 面包屑组件重构
+
+layout/header/breadcrumb.vue 文件
+
+```html
+<template>
+  <a-breadcrumb class="c-breadcrumb">
+    <a-breadcrumb-item v-for="item in breadcrumbMenu" :key="item.name">
+      <router-link :to="{ name: item.name }"> {{ item.title }} </router-link>
+    </a-breadcrumb-item>
+  </a-breadcrumb>
+</template>
+
+<script setup lang="ts">
+  import { computed } from "vue";
+  import { useBreadcrumbStore } from "stores/breadcrumb";
+  const { generateBreadcrumb } = useBreadcrumbStore();
+  const breadcrumbMenu = computed(() => generateBreadcrumb();
+</script>
+
+<style lang="scss" scoped>
+  .c-breadcrumb {
+  }
+</style>
+```

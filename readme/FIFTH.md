@@ -7,7 +7,6 @@
 ![预览效果](https://github.com/zptime/resources/blob/master/images/shanglv-vite-antdv/ic_5_1.png)
 
 在继续做项目之前，有一些升级和准备：
-
 1. [npm 依赖包版本升级](https://github.com/zptime/shanglv-vite-antdv/blob/main/readme/update.md)
 2. `Vetur` 是一个 VSCode 插件，在 Vue2.x 项目中普遍使用，但是对 TS 的支持不太友好；因此 Vue3.x 开发推荐另外一个插件 `Volar`。注意：`Volar 和 Vetur 两个是互斥的，使用 Volar 时要记得禁用 Vetur`
 3. [Pinia](https://pinia.esm.dev/)：类似 Vuex，旨在测试 Vuex 下一次迭代的提案，与 Vuex 5 的开放式 RFC 的 API 非常相似。
