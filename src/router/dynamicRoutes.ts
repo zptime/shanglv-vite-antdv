@@ -61,7 +61,8 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         path: "200",
         name: "200",
         meta: { title: "成功页", role: ["admin"] },
-        component: { template: "<div>200页面</div>" },
+        // component: { template: "<div>200页面</div>" },
+        component: () => import("views/result/200.vue"),
         children: [
           {
             path: "200",

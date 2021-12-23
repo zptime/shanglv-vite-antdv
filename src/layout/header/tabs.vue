@@ -33,6 +33,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
+// tabList数据的实现：监听route的变化，添加数据
 const tabList = ref([
   { id: "1", title: "首页" },
   { id: "2", title: "用户管理" },
@@ -83,6 +84,7 @@ const handleEdit = (targetKey: string) => {
   width: 100%;
   height: 100%;
   border-left: 1px solid #f0f0f0;
+  
   // scoped中的样式穿透，针对scss
   :deep(.ant-tabs-nav) {
     margin-bottom: 0;
