@@ -34,13 +34,11 @@ import { useBreadcrumbStore } from "stores/breadcrumb";
 const { setBreadcrumb } = useBreadcrumbStore();
 const { menus } = storeToRefs(useMenuStore());
 const { setSelectedMenu, setOpenMenu } = useMenuStore();
-// console.log("menus", menus.value);
 
 let selectedKeys = ref<string[]>([]);
 let openKeys = ref<string[]>([]);
 
 const handleMenuClick = ({ name = "", keyPath = [] }) => {
-  // console.log("handleMenuClick", name, keyPath, openKeys);
   // 选中菜单数据保存
   setSelectedMenu(name);
   setOpenMenu(openKeys.value);

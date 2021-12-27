@@ -5,27 +5,13 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
-import { useStore } from "store/index";
+<script lang="ts" setup>
+import { storeToRefs } from "pinia";
+import { useSettingStore } from "stores/setting.ts";
 
-export default defineComponent({
-  setup() {
-    const store = useStore();
-    const title = computed(() => store.state.settings.title);
-    const logo = computed(() => store.state.settings.logo);
-    const isCollapse = computed(() => store.state.settings.isCollapse);
-
-    return {
-      title,
-      logo,
-      isCollapse,
-    };
-  },
-  data() {
-    return {};
-  },
-});
+// storeToRefs，保持响应式
+const { logo, title, isCollapse } = storeToRefs(useSettingStore());
+console.log(isCollapse.value);
 </script>
 
 <style scoped lang="scss">

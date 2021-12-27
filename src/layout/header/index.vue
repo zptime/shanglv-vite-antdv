@@ -6,37 +6,22 @@
         class="c-header-trigger"
         @click="toggleCollapse"
       />
+      <!-- 面包屑组件 -->
       <hl-breadcrumb class="c-header-breadcrumb" />
     </div>
+    <!-- 头部导航 -->
     <hl-tabs />
   </a-layout-header>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
-import { useStore } from "store/index";
+<script lang="ts" setup>
+import { storeToRefs } from "pinia";
+import { useSettingStore } from "stores/setting";
 import HlBreadcrumb from "./breadcrumb.vue";
 import HlTabs from "./tabs.vue";
 
-export default defineComponent({
-  components: {
-    HlBreadcrumb,
-    HlTabs,
-  },
-  setup() {
-    const store = useStore();
-    const isCollapse = computed(() => store.state.settings.isCollapse);
-    const toggleCollapse = () => {
-      store.commit("TOGGLE_COLLAPSE");
-      // console.log("isCollapse...", isCollapse.value);
-    };
-
-    return {
-      isCollapse,
-      toggleCollapse,
-    };
-  },
-});
+const { isCollapse } = storeToRefs(useSettingStore());
+const { toggleCollapse } = useSettingStore();
 </script>
 
 <style lang="scss" scoped>

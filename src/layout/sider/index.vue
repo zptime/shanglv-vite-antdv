@@ -5,27 +5,13 @@
   </a-layout-sider>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
-import { useStore } from "store/index";
+<script lang="ts" setup>
+import { storeToRefs } from "pinia";
+import { useSettingStore } from "stores/setting";
 import Logo from "./logo.vue";
 import Menu from "./menu.vue";
 
-export default defineComponent({
-  components: {
-    Logo,
-    Menu,
-  },
-  setup() {
-    const store = useStore();
-    const isCollapse = computed(() => store.state.settings.isCollapse);
-    console.log("isCollapse", isCollapse.value);
-
-    return {
-      isCollapse,
-    };
-  },
-});
+const { isCollapse } = storeToRefs(useSettingStore());
 </script>
 
 <style></style>
