@@ -5,7 +5,6 @@ import { MenuRecord } from "interface/menu";
 // 菜单数据转化
 const transMenus = (routes: RouteRecordRaw[]): MenuRecord[] => {
   let result: MenuRecord[] = [];
-  console.log(routes);
   routes.forEach((o) => {
     const { name, children } = o;
     // 1. hidden为true的隐藏
@@ -23,7 +22,7 @@ const transMenus = (routes: RouteRecordRaw[]): MenuRecord[] => {
         name: flagName ? flagName : (name as string),
         title: o.meta && o.meta.title ? o.meta.title : "",
         icon: o.meta && o.meta.icon ? o.meta.icon : "",
-        child: flagName ? [] : (o.children as unknown as MenuRecord[]),
+        child: flagName ? [] : (o.children as unknown as MenuRecord[]) || [],
       });
     }
   });
@@ -33,12 +32,23 @@ const transMenus = (routes: RouteRecordRaw[]): MenuRecord[] => {
 export const useMenuStore = defineStore("menu", {
   state: () => ({
     menus: [] as MenuRecord[],
-    selectedMenu: "",
-    openMenu: [] as string[],
+    selectedMenu: "", // 选中菜单数据
+    openMenu: [] as string[], // 展开菜单数据
   }),
   getters: {
-    getMenus(state) {
-      return state.menus;
+    getSelectedMenu(state) {
+      return state.selectedMenu
+        ? state.selectedMenu
+        : localStorage.getItem("selectedMenu")
+        ? localStorage.getItem("selectedMenu")
+        : "";
+    },
+    getOpenMenu(state) {
+      return state.openMenu?.length
+        ? state.openMenu
+        : localStorage.getItem("openMenu")
+        ? (localStorage.getItem("openMenu") || "").split(",")
+        : [];
     },
   },
   actions: {
@@ -46,23 +56,10 @@ export const useMenuStore = defineStore("menu", {
       const menus = transMenus(routes);
       // console.log("generateMenus", menus);
       this.setMenus(menus);
+      return menus;
     },
     setMenus(menus: MenuRecord[]) {
       this.menus = menus;
-    },
-    getSelectedMenu() {
-      return this.selectedMenu
-        ? this.selectedMenu
-        : localStorage.getItem("selectedMenu")
-        ? localStorage.getItem("selectedMenu")
-        : "";
-    },
-    getOpenMenu() {
-      return this.openMenu?.length
-        ? this.openMenu
-        : localStorage.getItem("openMenu")
-        ? (localStorage.getItem("openMenu") || "").split(",")
-        : [];
     },
     setSelectedMenu(menu = "") {
       localStorage.setItem("selectedMenu", menu);

@@ -9,12 +9,14 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     name: "system",
     component: Layout,
     meta: { title: "系统管理", icon: "DesktopOutlined" },
+    redirect: "/system/user",
     children: [
       {
         path: "user",
         name: "user",
         meta: { title: "用户管理", icon: "AppstoreOutlined" },
-        redirect: "/index",
+        redirect: "/system/user/index",
+        // component: () => import("views/system/user/index.vue"),
         children: [
           {
             path: "index",
@@ -73,10 +75,16 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         ],
       },
       {
+        path: "404",
+        name: "404",
+        meta: { title: "失败页", role: ["admin"] },
+        component: () => import("views/result/404.vue"),
+      },
+      {
         path: "500",
         name: "500",
         meta: { title: "失败页", role: ["admin"] },
-        component: { template: "<div>500页面</div>" },
+        component: () => import("views/result/500.vue"),
       },
     ],
   },
@@ -85,6 +93,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     component: Layout,
     name: "components",
     meta: { title: "组件库", icon: "SettingOutlined", role: ["admin", "root"] },
+    redirect: "/components/table",
     children: [
       {
         path: "table",

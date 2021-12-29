@@ -31,18 +31,27 @@ import { storeToRefs } from "pinia";
 import { useMenuStore } from "stores/menus";
 import { useBreadcrumbStore } from "stores/breadcrumb";
 
-const { setBreadcrumb } = useBreadcrumbStore();
 const { menus } = storeToRefs(useMenuStore());
 const { setSelectedMenu, setOpenMenu } = useMenuStore();
+const { setBreadcrumb } = useBreadcrumbStore();
+console.log(menus.value);
 
 let selectedKeys = ref<string[]>([]);
 let openKeys = ref<string[]>([]);
 
-const handleMenuClick = ({ name = "", keyPath = [] }) => {
+const handleMenuClick = ({ key = "", keyPath = [] }) => {
+  console.log(
+    "setSelectedMenu:",
+    key,
+    ";keyPath:",
+    keyPath,
+    ";setOpenMenu:",
+    openKeys.value
+  );
   // 选中菜单数据保存
-  setSelectedMenu(name);
-  setOpenMenu(openKeys.value);
-
+  // setSelectedMenu(key);
+  // setOpenMenu(openKeys.value);
+  
   // 保存选中路径
   setBreadcrumb(keyPath);
 };

@@ -15,8 +15,7 @@
 ### 安装
 
 ```js
-// 安装命令 ^2.2.8 -> ^3.0.0-alpha.13
-yarn add ant-design-vue@3.0.0-alpha.13
+yarn add ant-design-vue@next
 ```
 
 ### 按需加载
@@ -218,11 +217,6 @@ export const useMenuStore = defineStore("menu", {
     selectedMenu: "",
     openMenu: [] as string[],
   }),
-  getters: {
-    getMenus(state) {
-      return state.menus;
-    },
-  },
   actions: {
     generateMenus(routes: RouteRecordRaw[]) {
       const menus = transMenus(routes);

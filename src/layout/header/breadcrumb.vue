@@ -13,8 +13,7 @@ import { computed } from "vue";
 import { useBreadcrumbStore } from "stores/breadcrumb";
 const { generateBreadcrumb } = useBreadcrumbStore();
 const breadcrumbMenu = computed(() => {
-  let result = generateBreadcrumb();
-  return result;
+  return generateBreadcrumb();
 });
 </script>
 

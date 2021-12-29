@@ -16,12 +16,10 @@ declare module 'vue' {
     ALayoutSider: typeof import('ant-design-vue/es')['LayoutSider']
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
-    AMenuItemGroup: typeof import('ant-design-vue/es')['MenuItemGroup']
     ARadio: typeof import('ant-design-vue/es')['Radio']
     ASubMenu: typeof import('ant-design-vue/es')['SubMenu']
     ATabPane: typeof import('ant-design-vue/es')['TabPane']
     ATabs: typeof import('ant-design-vue/es')['Tabs']
-    ATag: typeof import('ant-design-vue/es')['Tag']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     ScrollPane: typeof import('./src/components/base/ScrollPane.vue')['default']
   }

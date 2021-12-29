@@ -34,7 +34,7 @@ const settings: Module<SettingsState, RootStateTypes> = {
     },
     SET_BREADCRUMB(state, data) {
       localStorage.setItem("breadcrumbList", data);
-      console.log("breadcrumbList", data);
+      // console.log("breadcrumbList", data);
       state.breadcrumbList = data;
     },
   },

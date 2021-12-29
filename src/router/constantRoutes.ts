@@ -6,7 +6,7 @@ const Layout = () => import("@/layout/index.vue");
 export const constRoutes: RouteRecordRaw[] = [
   {
     path: "/",
-    name: "dashboard",
+    name: "home",
     component: Layout,
     redirect: "/dashboard",
     meta: { title: "首页", icon: "PieChartOutlined" },
