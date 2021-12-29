@@ -69,7 +69,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
           {
             path: "200",
             name: "one",
-            meta: { title: "成功页1", role: ["admin"] },
+            meta: { title: "200", role: ["admin"] },
             component: { template: "<div>200页面111</div>" },
           },
         ],
@@ -77,13 +77,13 @@ export const dynamicRoutes: RouteRecordRaw[] = [
       {
         path: "404",
         name: "404",
-        meta: { title: "失败页", role: ["admin"] },
+        meta: { title: "404", role: ["admin"] },
         component: () => import("views/result/404.vue"),
       },
       {
         path: "500",
         name: "500",
-        meta: { title: "失败页", role: ["admin"] },
+        meta: { title: "500", role: ["admin"] },
         component: () => import("views/result/500.vue"),
       },
     ],
