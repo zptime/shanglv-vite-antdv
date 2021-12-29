@@ -2,16 +2,17 @@
   <div class="c-header-tags">
     <div class="cht-tabs">
       <a-tabs
-        v-model:activeKye="activeKey"
+        v-model:activeKey="activeKey"
         type="editable-card"
         hide-add
-        @edit="handleEdit"
+        @change="handleChange"
+        @edit="handleClose"
       >
         <a-tab-pane
           v-for="item in tabList"
-          :key="item.id"
+          :key="item.name"
           :tab="item.title"
-          closable
+          :closable="item.closable"
         >
         </a-tab-pane>
       </a-tabs>
@@ -31,28 +32,49 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, computed, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useTabsStore } from "stores/tabs";
+
+const { getTabs, closeTab, openTab } = useTabsStore();
 
 // tabList数据的实现：监听route的变化，添加数据
-const tabList = ref([
-  { id: "1", title: "首页" },
-  { id: "2", title: "用户管理" },
-  { id: "3", title: "角色管理" },
-  { id: "4", title: "菜单管理" },
-  { id: "5", title: "成功页" },
-  { id: "6", title: "失败页" },
-  { id: "7", title: "表格" },
-  { id: "8", title: "树组件" },
-]);
-let activeKey = ref("1");
+const tabList = computed(() => {
+  return getTabs;
+});
+const activeKey = ref(tabList.value[0].name);
 
-const handleEdit = (targetKey: string) => {
-  tabList.value = tabList.value.filter((o) => o.id !== targetKey);
-  // 如果关掉已选中的，则默认最后一个选中
-  if (tabList.value.length && activeKey.value === targetKey) {
-    activeKey.value = tabList.value[tabList.value.length - 1].id;
+// 官网地址：[在 setup 中访问路由和当前路由](https://next.router.vuejs.org/zh/guide/advanced/composition-api.html)
+const router = useRouter();
+const route = useRoute();
+
+// 1. 添加标签页，通过监听路由实现
+// route对象是一个响应式对象，避免监听整个对象
+watch(
+  () => route.name,
+  (newName) => {
+    if (newName) {
+      openTab(newName as string);
+      activeKey.value = newName;
+    }
   }
-  console.log("activeKey", activeKey.value);
+);
+
+// 2. 关闭标签页
+const handleClose = (targetKey: string) => {
+  closeTab(targetKey);
+};
+
+// 3. 选中标签页
+const handleChange = (targetKey: string) => {
+  // 继续当前选中，不处理
+  // if (activeKey.value === targetKey) return false;
+
+  // 否则，更改选中标签页
+  // activeKey.value === targetKey;
+  router.push({
+    name: targetKey,
+  });
 };
 </script>
 
@@ -84,7 +106,7 @@ const handleEdit = (targetKey: string) => {
   width: 100%;
   height: 100%;
   border-left: 1px solid #f0f0f0;
-  
+
   // scoped中的样式穿透，针对scss
   :deep(.ant-tabs-nav) {
     margin-bottom: 0;
